@@ -1,4 +1,4 @@
-package com.SGH.demo;
+package com.SGH.hospital;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
