@@ -1,31 +1,32 @@
-package com.SGH.hospital.entity;
+package com.SGH.hospital.entity; // Paquete de entidades JPA
 
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@DiscriminatorValue("MEDICO")
-public class Medico extends Usuario {
+@Entity // Marca la clase como entidad persistente
+@DiscriminatorValue("MEDICO") // Identifica este tipo en la herencia de Usuario
+public class Medico extends Usuario { // Hereda los datos base del usuario
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true) // Matrícula obligatoria y única
     private String matricula;
 
-    @ManyToMany
+    @ManyToMany // Relación muchos a muchos con Especialidad
     @JoinTable(
-        name = "medico_especialidad",
-        joinColumns = @JoinColumn(name = "medico_id"),
-        inverseJoinColumns = @JoinColumn(name = "especialidad_id")
+        name = "medico_especialidad", // Tabla intermedia
+        joinColumns = @JoinColumn(name = "medico_id"), // FK hacia Medico
+        inverseJoinColumns = @JoinColumn(name = "especialidad_id") // FK hacia Especialidad
     )
+    private Set<Especialidad> especialidades = new HashSet<>(); // Evita nulls
 
-    private Set<Especialidad> especialidades = new HashSet<>();
+    // ---------- Getters y Setters ----------
 
-    public String getMatricula(){
-        return this.matricula;
+    public String getMatricula() {
+        return matricula;
     }
 
-    public void setMatricula(String matricula){
+    public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.SGH.hospital.enums.Rol;
 import com.SGH.hospital.enums.EstadoUsuario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,7 +21,12 @@ public abstract class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
+    private String nombre;        // Nombre del usuario
+    private String apellido;      // Apellido del usuario
+    private String dni;           // DNI del usuario
+    private String telefono;      // Teléfono del usuario
+    private String direccion;     // Dirección del usuario
+    private LocalDate fechaNacimiento; // Fecha de nacimiento
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -41,48 +47,90 @@ public abstract class Usuario {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    // ---------- Getters y Setters ----------
+
+    public Long getId() {
+        return id;
+    }
+
     public String getNombre() {
-        return this.nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPassword(){
-        return this.password;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Rol getRol(){
-        return this.rol;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setRol(Rol rol){
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
-    public EstadoUsuario getEstado(){
-        return this.estado;
+    public EstadoUsuario getEstado() {
+        return estado;
     }
 
-    public void setEstado(EstadoUsuario estado){
+    public void setEstado(EstadoUsuario estado) {
         this.estado = estado;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public LocalDateTime getCreatedAt() {
