@@ -30,6 +30,7 @@ public class AuthResponse {
 
     // Tipo de autenticación
     // Por convención se usa "Bearer" en JWT
+    @Builder.Default
     private String type = "Bearer";
 
     // ID del usuario autenticado

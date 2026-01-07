@@ -3,7 +3,6 @@ package com.SGH.hospital.service;
 // Clases de la librería jjwt para manejar JWT
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 // Java
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,19 +68,12 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
-        return Jwts
-                .builder()
-                // Claims personalizados
-                .setClaims(extraClaims)
-                // Subject: normalmente el username o email
-                .setSubject(userDetails.getUsername())
-                // Fecha de creación del token
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                // Fecha de expiración
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                // Firma del token usando HMAC SHA256
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                // Construye el token final
+        return Jwts.builder()
+                .claims(extraClaims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey()) // ← forma nueva
                 .compact();
     }
 
