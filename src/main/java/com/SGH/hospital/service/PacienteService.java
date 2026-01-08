@@ -70,10 +70,8 @@ public class PacienteService {
         paciente.setRol(Rol.PACIENTE);
         paciente.setEstado(EstadoUsuario.ACTIVO);
 
-        // Se setea el número de afiliado solo si viene en el request
-        if (request.getNumeroAfiliado() != null) {
-            paciente.setNumeroAfiliado(request.getNumeroAfiliado());
-        }
+        paciente.setObraSocial(request.getObraSocial());
+        paciente.setNumeroAfiliado(request.getNumeroAfiliado());
 
         // Se guarda el paciente en la base de datos
         Paciente savedPaciente = pacienteRepository.save(paciente);

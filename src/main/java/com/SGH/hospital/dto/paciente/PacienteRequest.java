@@ -50,7 +50,11 @@ public class PacienteRequest {
     @Size(max = 255, message = "La dirección no puede superar los 255 caracteres")
     private String direccion;
 
-    @NotBlank(message = "Se debe ingresar el numeroAfiliado")
-    @Size(max = 20, message = "El grupo sanguíneo no puede superar los 20 caracteres")
+    @NotBlank(message = "El número de afiliado es obligatorio")
+    @Size(max = 20, message = "El numero afiliado no puede superar los 20 caracteres")
     private String numeroAfiliado;
+
+    @NotBlank(message = "La obra social es obligatoria")
+    @Size(max = 20, message = "La obra social no puede superar los 20 caracteres")
+    private String obraSocial;
 }

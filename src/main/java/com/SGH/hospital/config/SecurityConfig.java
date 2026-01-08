@@ -1,9 +1,9 @@
-// config/SecurityConfig.java
 package com.SGH.hospital.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -29,16 +29,33 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
+                // ==================== ENDPOINTS PÚBLICOS ====================
+                // Health checks (para Render, Docker, monitoreo)
+                .requestMatchers("/", "/api/health", "/health").permitAll()
+                
+                // Autenticación (login, register, refresh)
+                .requestMatchers("/api/auth/**").permitAll()
+                
+                // Registro público de pacientes
+                .requestMatchers(HttpMethod.POST, "/api/pacientes").permitAll()
+                
+                // Endpoints públicos generales
+                .requestMatchers("/api/public/**").permitAll()
+                
+                // Swagger/OpenAPI
                 .requestMatchers(
-                    "/api/auth/**",
-                    "/api/public/**",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
+                
+                // ==================== ENDPOINTS PROTEGIDOS ====================
+                // Por rol específico
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/medicos/**").hasAnyRole("MEDICO", "ADMIN")
-                .requestMatchers("/api/pacientes/**").hasAnyRole("PACIENTE", "ADMIN")
+                .requestMatchers("/api/pacientes/**").hasAnyRole("PACIENTE", "MEDICO", "ADMIN")
+                
+                // Todo lo demás requiere autenticación
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -49,15 +66,39 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // AuthenticationManager: sigue igual
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // PasswordEncoder: sigue igual
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+
+/**
+ * ==================== CONFIGURACIÓN DE SEGURIDAD ====================
+ * 
+ * ENDPOINTS PÚBLICOS (sin autenticación requerida):
+ * ✅ GET  /                           → Home de la API
+ * ✅ GET  /api/health                 → Health check
+ * ✅ GET  /health                     → Health check alternativo
+ * ✅ POST /api/auth/register          → Registro de nuevos usuarios
+ * ✅ POST /api/auth/login             → Login
+ * ✅ POST /api/auth/refresh           → Refresh de tokens
+ * ✅ POST /api/pacientes              → Auto-registro de pacientes
+ * ✅ ALL  /v3/api-docs/**             → Documentación OpenAPI
+ * ✅ ALL  /swagger-ui/**              → Swagger UI
+ * 
+ * ENDPOINTS PROTEGIDOS POR ROL:
+ * 🔒 /api/admin/**                    → Solo ADMIN
+ * 🔒 /api/medicos/**                  → MEDICO o ADMIN
+ * 🔒 /api/pacientes/**                → PACIENTE, MEDICO o ADMIN
+ * 🔒 Cualquier otro endpoint          → Usuario autenticado
+ * 
+ * NOTAS:
+ * - @EnableMethodSecurity permite usar @PreAuthorize en los controladores
+ * - SessionCreationPolicy.STATELESS: no usa sesiones (JWT puro)
+ * - JwtAuthenticationFilter se ejecuta ANTES del filtro de autenticación de Spring
+ */
