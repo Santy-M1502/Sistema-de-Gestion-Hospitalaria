@@ -9,6 +9,7 @@ import com.SGH.hospital.exception.BadRequestException;
 import com.SGH.hospital.exception.ResourceNotFoundException;
 import com.SGH.hospital.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -32,6 +34,10 @@ public class AuthService {
     
     @Transactional
     public AuthResponse register(RegisterRequest request) {
+        log.info("========== REGISTRO DE NUEVO PACIENTE ==========");
+        log.info("Email: {}", request.getEmail());
+        log.info("DNI: {}", request.getDni());
+        
         // Verificar si el email ya existe
         if (usuarioRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("El email ya está registrado");
@@ -55,7 +61,17 @@ public class AuthService {
         paciente.setRol(Rol.PACIENTE);
         paciente.setEstado(EstadoUsuario.ACTIVO);
         
+        log.info("Obra Social del request: {}", request.getObraSocial());
+        log.info("Numero Afiliado del request: {}", request.getNumeroAfiliado());
+        
+        paciente.setObraSocial(request.getObraSocial());
+        paciente.setNumeroAfiliado(request.getNumeroAfiliado());
+        
+        log.info("Obra Social asignada al paciente: {}", paciente.getObraSocial());
+        log.info("Numero Afiliado asignado al paciente: {}", paciente.getNumeroAfiliado());
+        
         Usuario savedUsuario = usuarioRepository.save(paciente);
+        log.info("Paciente guardado con ID: {}", savedUsuario.getId());
         
         // Generar tokens
         Map<String, Object> extraClaims = new HashMap<>();

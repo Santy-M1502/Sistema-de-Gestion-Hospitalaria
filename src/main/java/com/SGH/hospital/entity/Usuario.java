@@ -26,6 +26,8 @@ public abstract class Usuario {
     private String dni;           // DNI del usuario
     private String telefono;      // Teléfono del usuario
     private String direccion;     // Dirección del usuario
+
+    @Column(name="fecha_nacimiento")
     private LocalDate fechaNacimiento; // Fecha de nacimiento
 
     @Column(nullable = false, unique = true)

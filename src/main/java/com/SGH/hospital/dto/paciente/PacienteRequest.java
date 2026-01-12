@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -39,7 +41,7 @@ public class PacienteRequest {
     private String password;
 
     @NotBlank(message = "El teléfono es obligatorio")
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "El teléfono debe tener entre 10 y 15 dígitos")
+    @Pattern(regexp = "^[0-9]{10,20}$", message = "El teléfono debe tener entre 10 y 15 dígitos")
     private String telefono;
 
     @NotNull(message = "La fecha de nacimiento es obligatoria")
@@ -52,9 +54,11 @@ public class PacienteRequest {
 
     @NotBlank(message = "El número de afiliado es obligatorio")
     @Size(max = 20, message = "El numero afiliado no puede superar los 20 caracteres")
+    @JsonProperty("numero_afiliado")
     private String numeroAfiliado;
 
     @NotBlank(message = "La obra social es obligatoria")
     @Size(max = 20, message = "La obra social no puede superar los 20 caracteres")
+    @JsonProperty("obra_social")
     private String obraSocial;
 }

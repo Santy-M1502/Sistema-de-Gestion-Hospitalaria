@@ -8,9 +8,10 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("PACIENTE") // Valor que identifica este tipo en la herencia
 public class Paciente extends Usuario { // Hereda los campos base de Usuario
 
+    @Column(name = "obra_social")
     private String obraSocial; // Obra social del paciente
 
-    @Column(nullable = false) // Número obligatorio para identificar al afiliado
+    @Column(nullable = false, name = "numero_afiliado") // Número obligatorio para identificar al afiliado
     private String numeroAfiliado;
 
     // ---------- Getters y Setters ----------

@@ -21,9 +21,9 @@ public class PacienteResponse {
     private String dni;
     private String email;
     private String telefono;
-    private LocalDate fechaNacimiento;
+    private LocalDate fecha_nacimiento;
     private String direccion;
-    private String numeroAfiliado;
+    private String numero_afiliado;
     private EstadoUsuario estado;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -37,9 +37,9 @@ public class PacienteResponse {
                 .dni(paciente.getDni())
                 .email(paciente.getEmail())
                 .telefono(paciente.getTelefono())
-                .fechaNacimiento(paciente.getFechaNacimiento())
+                .fecha_nacimiento(paciente.getFechaNacimiento())
                 .direccion(paciente.getDireccion())
-                .numeroAfiliado(paciente.getNumeroAfiliado())
+                .numero_afiliado(paciente.getNumeroAfiliado())
                 .estado(paciente.getEstado())
                 .createdAt(paciente.getCreatedAt())
                 .updatedAt(paciente.getUpdatedAt())
