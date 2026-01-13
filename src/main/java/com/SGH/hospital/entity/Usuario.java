@@ -21,8 +21,12 @@ public abstract class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;        // Nombre del usuario
-    private String apellido;      // Apellido del usuario
+    @Column(length = 100)
+    private String nombre;
+    
+    @Column(length = 100)
+    private String apellido;
+    
     private String dni;           // DNI del usuario
     private String telefono;      // Teléfono del usuario
     private String direccion;     // Dirección del usuario

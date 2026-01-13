@@ -50,22 +50,6 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
         Pageable pageable
     );
 
-    // Búsqueda avanzada con múltiples filtros
-    @Query("SELECT DISTINCT m FROM Medico m LEFT JOIN m.especialidades e " +
-           "WHERE (:nombre IS NULL OR LOWER(m.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))) " +
-           "AND (:apellido IS NULL OR LOWER(m.apellido) LIKE LOWER(CONCAT('%', :apellido, '%'))) " +
-           "AND (:especialidadId IS NULL OR e.id = :especialidadId) " +
-           "AND (:disponible IS NULL OR m.disponible = :disponible) " +
-           "AND (:estado IS NULL OR m.estado = :estado)")
-    Page<Medico> buscarConFiltros(
-        @Param("nombre") String nombre,
-        @Param("apellido") String apellido,
-        @Param("especialidadId") Long especialidadId,
-        @Param("disponible") Boolean disponible,
-        @Param("estado") EstadoUsuario estado,
-        Pageable pageable
-    );
-
     // Obtener médico con especialidades (fetch join para evitar N+1)
     @Query("SELECT DISTINCT m FROM Medico m LEFT JOIN FETCH m.especialidades WHERE m.id = :id")
     Optional<Medico> findByIdWithEspecialidades(@Param("id") Long id);

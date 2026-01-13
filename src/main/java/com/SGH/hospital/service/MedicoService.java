@@ -252,16 +252,6 @@ public class MedicoService {
         ).map(this::convertirAResponse);
     }
 
-    @Transactional(readOnly = true)
-    public Page<MedicoResponse> buscarConFiltros(
-            String nombre, String apellido, Long especialidadId, 
-            Boolean disponible, EstadoUsuario estado, Pageable pageable) {
-        
-        return medicoRepository.buscarConFiltros(
-                nombre, apellido, especialidadId, disponible, estado, pageable
-        ).map(this::convertirAResponse);
-    }
-
     // ==================== Métodos Auxiliares ====================
 
     private Set<Especialidad> obtenerEspecialidades(Set<Long> ids) {
