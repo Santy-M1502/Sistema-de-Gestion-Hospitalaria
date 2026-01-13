@@ -156,19 +156,4 @@ public class MedicoController {
         Page<MedicoResponse> response = medicoService.buscarDisponibles(pageable);
         return ResponseEntity.ok(response);
     }
-
-    @GetMapping("/buscar")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ENFERMERO', 'PACIENTE')")
-    public ResponseEntity<Page<MedicoResponse>> buscarConFiltros(
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) String apellido,
-            @RequestParam(required = false) Long especialidadId,
-            @RequestParam(required = false) Boolean disponible,
-            @RequestParam(required = false) EstadoUsuario estado,
-            @PageableDefault(size = 10) Pageable pageable) {
-        
-        Page<MedicoResponse> response = medicoService.buscarConFiltros(
-                nombre, apellido, especialidadId, disponible, estado, pageable);
-        return ResponseEntity.ok(response);
-    }
 }
