@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "especialidades")
+@Table(name = "especialidad")
 public class Especialidad {
 
     @Id
@@ -49,11 +49,11 @@ public class Especialidad {
         this.nombre = nombre;
     }
 
-    public Boolean getActiva() {  // ⭐ GETTER AGREGADO
+    public Boolean getActiva() { 
         return activa;
     }
 
-    public void setActiva(Boolean activa) {  // ⭐ SETTER AGREGADO
+    public void setActiva(Boolean activa) {
         this.activa = activa;
     }
 

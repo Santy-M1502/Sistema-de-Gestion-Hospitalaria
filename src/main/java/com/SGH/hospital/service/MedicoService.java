@@ -74,6 +74,9 @@ public class MedicoService {
         medico.setTelefono(request.getTelefono());
         medico.setDireccion(request.getDireccion());
         medico.setFechaNacimiento(request.getFechaNacimiento());
+        medico.setAniosExperiencia(request.getAniosExperiencia());
+        medico.setBiografia(request.getBiografia());
+        medico.setDisponible(request.getDisponible());
         medico.setEspecialidades(especialidades);
         medico.setEstado(EstadoUsuario.ACTIVO);
         medico.setRol(Rol.MEDICO);
