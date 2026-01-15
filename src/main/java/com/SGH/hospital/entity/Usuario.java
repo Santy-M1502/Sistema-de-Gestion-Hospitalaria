@@ -146,4 +146,8 @@ public abstract class Usuario {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public void setId(long id){
+        this.id = id;
+    }
 }
