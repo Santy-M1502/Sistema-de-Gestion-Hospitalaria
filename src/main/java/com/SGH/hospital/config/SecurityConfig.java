@@ -30,7 +30,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 // ==================== ENDPOINTS PÚBLICOS ====================
-                // Health checks (para Render, Docker, monitoreo)
+                // Health checks (para Railway, Docker, monitoreo)
                 .requestMatchers("/", "/api/health", "/health").permitAll()
                 
                 // Autenticación (login, register, refresh)
@@ -42,11 +42,14 @@ public class SecurityConfig {
                 // Endpoints públicos generales
                 .requestMatchers("/api/public/**").permitAll()
                 
-                // Swagger/OpenAPI
+                // Swagger/OpenAPI (documentación de la API)
                 .requestMatchers(
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui.html",
+                    "/api-docs/**",
+                    "/swagger-resources/**",
+                    "/webjars/**"
                 ).permitAll()
                 
                 // ==================== ENDPOINTS PROTEGIDOS ====================
@@ -88,8 +91,10 @@ public class SecurityConfig {
  * ✅ POST /api/auth/login             → Login
  * ✅ POST /api/auth/refresh           → Refresh de tokens
  * ✅ POST /api/pacientes              → Auto-registro de pacientes
+ * ✅ ALL  /api/public/**              → Endpoints públicos generales
  * ✅ ALL  /v3/api-docs/**             → Documentación OpenAPI
  * ✅ ALL  /swagger-ui/**              → Swagger UI
+ * ✅ ALL  /swagger-ui.html            → Página principal de Swagger
  * 
  * ENDPOINTS PROTEGIDOS POR ROL:
  * 🔒 /api/admin/**                    → Solo ADMIN
@@ -101,4 +106,5 @@ public class SecurityConfig {
  * - @EnableMethodSecurity permite usar @PreAuthorize en los controladores
  * - SessionCreationPolicy.STATELESS: no usa sesiones (JWT puro)
  * - JwtAuthenticationFilter se ejecuta ANTES del filtro de autenticación de Spring
+ * - Swagger UI accesible públicamente para facilitar testing y documentación
  */
