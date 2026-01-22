@@ -23,15 +23,15 @@ public class Turno {
     @Column(nullable = false)
     private EstadoTurno estado;
 
-    @Column(table = "motivo_consulta")
+    @Column(name = "motivo_consulta")
     private String motivoConsulta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "medico_id")
     private Medico medico;
 
     public Turno(){}
@@ -53,8 +53,8 @@ public class Turno {
         this.id = id;
     }
 
-    public Long getFecha(){
-        return id;
+    public LocalDate getFecha(){
+        return fecha;
     }
 
     public void setFecha(LocalDate fecha){
