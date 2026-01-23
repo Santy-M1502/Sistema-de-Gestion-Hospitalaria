@@ -12,14 +12,40 @@ import java.util.List;
 @Repository
 public interface HorarioAtencionRepository extends JpaRepository<HorarioAtencion, Long> {
     
+    /**
+     * Busca medico por Id
+     * 
+     * @param medicoId
+     * @return
+     */
     List<HorarioAtencion> findByMedicoId(Long medicoId);
+
+    /**
+     * Busca si el medico esta activo
+     * 
+     * @param medicoId
+     * @param activo
+     * @return
+     */
     List<HorarioAtencion> findByMedicoIdAndActivo(Long medicoId, Boolean activo);
     
+    /**
+     * Busca los medicos activos cierta fecha
+     * 
+     * @param medicoId
+     * @param dia
+     * @return
+     */
     @Query("SELECT h FROM HorarioAtencion h WHERE h.medico.id = :medicoId AND h.diaSemana = :dia AND h.activo = true")
     List<HorarioAtencion> findByMedicoAndDia(
         @Param("medicoId") Long medicoId, 
         @Param("dia") DayOfWeek dia
     );
     
+    /**
+     * Elimina / Desactiva medico
+     * 
+     * @param medicoId
+     */
     void deleteByMedicoId(Long medicoId);
 }

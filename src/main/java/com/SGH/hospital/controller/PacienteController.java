@@ -26,20 +26,16 @@ public class PacienteController {
 
     private final PacienteService pacienteService;
 
-    /**
-     * POST /api/pacientes - Crear un nuevo paciente
-     * Accesible para ADMIN y el propio registro público
-     */
+    // ============================================================
+    // Crear paciente
+    // ============================================================
+
     @PostMapping
     public ResponseEntity<PacienteResponse> crearPaciente(@Valid @RequestBody PacienteRequest request) {
         PacienteResponse response = pacienteService.crearPaciente(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    /**
-     * GET /api/pacientes/{id} - Obtener paciente por ID
-     * Accesible para ADMIN, MEDICO y el propio PACIENTE
-     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<PacienteResponse> obtenerPorId(@PathVariable Long id) {
@@ -47,10 +43,6 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/dni/{dni} - Obtener paciente por DNI
-     * Accesible para ADMIN y MEDICO
-     */
     @GetMapping("/dni/{dni}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<PacienteResponse> obtenerPorDni(@PathVariable String dni) {
@@ -58,10 +50,6 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/email/{email} - Obtener paciente por email
-     * Accesible para ADMIN
-     */
     @GetMapping("/email/{email}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PacienteResponse> obtenerPorEmail(@PathVariable String email) {
@@ -69,11 +57,10 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes - Listar todos los pacientes con paginación
-     * Parámetros: page (default 0), size (default 10), sort (default createdAt,desc)
-     * Accesible para ADMIN y MEDICO
-     */
+    // ============================================================
+    // Listados y busquedas
+    // ============================================================
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<Page<PacienteResponse>> listarTodos(
@@ -91,10 +78,6 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/activos - Listar solo pacientes activos
-     * Accesible para ADMIN y MEDICO
-     */
     @GetMapping("/activos")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<Page<PacienteResponse>> listarActivos(
@@ -106,10 +89,6 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/estado/{estado} - Listar pacientes por estado
-     * Accesible para ADMIN
-     */
     @GetMapping("/estado/{estado}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<PacienteResponse>> listarPorEstado(
@@ -122,11 +101,6 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/buscar - Buscar pacientes por nombre o apellido
-     * Parámetro: q (query string)
-     * Accesible para ADMIN y MEDICO
-     */
     @GetMapping("/buscar")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<Page<PacienteResponse>> buscar(
@@ -139,10 +113,10 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * PUT /api/pacientes/{id} - Actualizar datos del paciente
-     * Accesible para ADMIN y el propio PACIENTE
-     */
+    // ============================================================
+    // Actualizacion de datos
+    // ============================================================
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (#id == authentication.principal.id and hasRole('PACIENTE'))")
     public ResponseEntity<PacienteResponse> actualizarPaciente(
@@ -153,10 +127,10 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * PATCH /api/pacientes/{id}/estado - Cambiar estado del paciente
-     * Accesible solo para ADMIN
-     */
+    // ============================================================
+    // Cambio de estado
+    // ============================================================
+
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PacienteResponse> cambiarEstado(
@@ -167,10 +141,10 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * DELETE /api/pacientes/{id} - Eliminar (desactivar) paciente
-     * Accesible solo para ADMIN
-     */
+    // ============================================================
+    // Eliminacion / Desactivacion
+    // ============================================================
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, String>> eliminarPaciente(@PathVariable Long id) {
@@ -183,10 +157,10 @@ public class PacienteController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /api/pacientes/stats/count - Obtener estadísticas de pacientes por estado
-     * Accesible para ADMIN
-     */
+    // ============================================================
+    // Estadisticas
+    // ============================================================
+
     @GetMapping("/stats/count")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Long>> obtenerEstadisticas() {

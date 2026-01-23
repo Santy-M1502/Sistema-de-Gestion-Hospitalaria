@@ -21,7 +21,7 @@ import java.util.Map;
  * - Herramientas de monitoreo: Para alertar si la API está caída
  * - Desarrolladores: Para pruebas rápidas
  */
-@RestController  // Combina @Controller + @ResponseBody (todas las respuestas son JSON automáticamente)
+@RestController
 public class HealthController {
 
     /**
@@ -39,52 +39,15 @@ public class HealthController {
      */
     @GetMapping("/")
     public Map<String, Object> home() {
-        /**
-         * HashMap: Estructura de datos clave-valor
-         * Permite almacenar pares como: "message" → "Texto del mensaje"
-         * 
-         * <String, Object> significa:
-         * - String: Las claves son texto ("message", "status", etc.)
-         * - Object: Los valores pueden ser cualquier tipo (String, int, LocalDateTime, etc.)
-         */
+
         Map<String, Object> response = new HashMap<>();
         
-        /**
-         * .put(clave, valor) - Agrega un par clave-valor al mapa
-         * 
-         * "message" es la clave, "Sistema de Gestión..." es el valor
-         * Cuando se convierte a JSON será: {"message": "Sistema de Gestión..."}
-         */
         response.put("message", "Sistema de Gestión Hospitalaria API");
         
-        /**
-         * Indica que la API está corriendo y operativa
-         * Útil para scripts que verifican el estado
-         */
         response.put("status", "running");
         
-        /**
-         * LocalDateTime.now() - Obtiene la fecha y hora actual del servidor
-         * 
-         * Útil para:
-         * - Ver la zona horaria del servidor
-         * - Verificar sincronización de tiempo
-         * - Debugging de problemas temporales
-         * 
-         * Ejemplo de salida: "2026-01-01T21:45:30.123"
-         */
         response.put("timestamp", LocalDateTime.now());
         
-        /**
-         * Retorna el mapa completo
-         * 
-         * Spring Boot automáticamente lo serializa a JSON:
-         * {
-         *   "message": "Sistema de Gestión Hospitalaria API",
-         *   "status": "running",
-         *   "timestamp": "2026-01-01T21:45:30.123456"
-         * }
-         */
         return response;
     }
 
@@ -107,64 +70,13 @@ public class HealthController {
      */
     @GetMapping("/api/health")
     public Map<String, Object> health() {
-        // Crea un nuevo mapa para la respuesta de salud
+
         Map<String, Object> health = new HashMap<>();
         
-        /**
-         * "UP" es el estándar de Spring Boot Actuator para indicar que todo está bien
-         * 
-         * Posibles valores estándar:
-         * - "UP": Todo funciona correctamente
-         * - "DOWN": Hay problemas críticos
-         * - "OUT_OF_SERVICE": Servicio deshabilitado temporalmente
-         * - "UNKNOWN": Estado desconocido
-         * 
-         * Render y Docker esperan HTTP 200 + status "UP"
-         */
         health.put("status", "UP");
         
-        /**
-         * Timestamp para saber cuándo se verificó la salud
-         * Útil para detectar si la app está "congelada" (siempre retorna el mismo timestamp)
-         */
         health.put("timestamp", LocalDateTime.now());
         
-        /**
-         * Retorna el estado de salud como JSON:
-         * {
-         *   "status": "UP",
-         *   "timestamp": "2026-01-01T21:45:30.123456"
-         * }
-         * 
-         * HTTP Status Code: 200 OK (automático si no hay excepciones)
-         */
         return health;
     }
 }
-
-/**
- * ¿POR QUÉ ES IMPORTANTE ESTE CONTROLADOR?
- * 
- * 1. DEPLOYMENT:
- *    - Render necesita /api/health para saber que la app está viva
- *    - Sin este endpoint, Render puede marcar la app como "failed" y reiniciarla
- * 
- * 2. DEBUGGING:
- *    - Puedes hacer curl https://tu-app.onrender.com/api/health para verificar rápidamente
- *    - Útil para diagnosticar problemas de red o de deployment
- * 
- * 3. MONITOREO:
- *    - Herramientas de monitoreo pueden hacer ping periódico
- *    - Si no responde, pueden enviar alertas
- * 
- * 4. LOAD BALANCING:
- *    - Load balancers usan health checks para saber a qué instancia enviar tráfico
- *    - Si una instancia está "DOWN", el tráfico se redirige a otras
- * 
- * EJEMPLO DE USO EN PRODUCCIÓN:
- * 
- * $ curl https://hospital-api.onrender.com/api/health
- * {"status":"UP","timestamp":"2026-01-01T21:45:30.123"}
- * 
- * Si ves esto, tu API está funcionando correctamente ✅
- */

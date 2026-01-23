@@ -16,16 +16,22 @@ public interface EspecialidadRepository extends JpaRepository<Especialidad, Long
     
     /**
      * Busca una especialidad por nombre (exacto)
+     * 
+     * @param nombre
      */
     Optional<Especialidad> findByNombre(String nombre);
     
     /**
      * Busca especialidades por estado activo/inactivo
+     * 
+     * @param activa
      */
     List<Especialidad> findByActiva(Boolean activa);
     
     /**
      * Verifica si existe una especialidad con ese nombre
+     * 
+     * @param nombre
      */
     boolean existsByNombre(String nombre);
     
@@ -33,12 +39,15 @@ public interface EspecialidadRepository extends JpaRepository<Especialidad, Long
     
     /**
      * Obtiene todas las especialidades activas ordenadas alfabéticamente
+     * 
      */
     @Query("SELECT e FROM Especialidad e WHERE e.activa = true ORDER BY e.nombre")
     List<Especialidad> findAllActivas();
     
     /**
      * Busca especialidades activas por nombre (búsqueda parcial)
+     * 
+     * @param nombre
      */
     @Query("SELECT e FROM Especialidad e WHERE e.activa = true " +
            "AND LOWER(e.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')) " +
@@ -56,6 +65,8 @@ public interface EspecialidadRepository extends JpaRepository<Especialidad, Long
     
     /**
      * Cuenta cuántos médicos tienen esta especialidad
+     * 
+     * @param especialidadId
      */
     @Query("SELECT COUNT(m) FROM Especialidad e " +
            "JOIN e.medicos m " +

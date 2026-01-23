@@ -18,12 +18,18 @@ public class EspecialidadController {
         this.especialidadService = especialidadService;
     }
 
+    // ============================================================
+    // Crear Especialidad
+    // ============================================================
     @PostMapping
     public ResponseEntity<Especialidad> crear(@RequestBody Especialidad especialidad) {
         Especialidad creada = especialidadService.crear(especialidad);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
+    // ============================================================
+    // Listar / Obtener objetos
+    // ============================================================
     @GetMapping
     public ResponseEntity<List<Especialidad>> listar() {
         return ResponseEntity.ok(especialidadService.listar());
@@ -34,6 +40,9 @@ public class EspecialidadController {
         return ResponseEntity.ok(especialidadService.obtener(id));
     }
 
+    // ============================================================
+    // Actualizad Datos
+    // ============================================================
     @PutMapping("/{id}")
     public ResponseEntity<Especialidad> actualizar(
             @PathVariable Long id,
@@ -41,6 +50,9 @@ public class EspecialidadController {
         return ResponseEntity.ok(especialidadService.actualizar(id, especialidad));
     }
 
+    // ============================================================
+    // Eliminar / Desactivar Datos
+    // ============================================================
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         especialidadService.eliminar(id);

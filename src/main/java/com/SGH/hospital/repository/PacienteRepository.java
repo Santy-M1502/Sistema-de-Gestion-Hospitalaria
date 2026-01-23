@@ -16,42 +16,62 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     /**
      * Busca un paciente por DNI
+     * 
+     * @param dni
      */
     Optional<Paciente> findByDni(String dni);
 
     /**
      * Busca un paciente por email
+     * 
+     * @param email
      */
     Optional<Paciente> findByEmail(String email);
 
     /**
      * Verifica si existe un paciente con el DNI especificado
+     * 
+     * @param dni
      */
     boolean existsByDni(String dni);
 
     /**
      * Verifica si existe un paciente con el email especificado
+     * 
+     * @param email
      */
     boolean existsByEmail(String email);
 
     /**
      * Verifica si existe un paciente con el DNI especificado, excluyendo un ID
      * Útil para validaciones en actualizaciones
+     * 
+     * @param dni
+     * @param id
      */
     boolean existsByDniAndIdNot(String dni, Long id);
 
     /**
      * Verifica si existe un paciente con el email especificado, excluyendo un ID
+     * 
+     * @param email
+     * @param id
      */
     boolean existsByEmailAndIdNot(String email, Long id);
 
     /**
      * Busca pacientes por estado con paginación
+     * 
+     * @param estado
+     * @param pageable
      */
     Page<Paciente> findByEstado(EstadoUsuario estado, Pageable pageable);
 
     /**
      * Busca pacientes cuyo nombre o apellido contenga el texto especificado
+     * 
+     * @param searchTerm
+     * @param pageable
      */
     @Query("SELECT p FROM Paciente p WHERE " +
            "LOWER(p.nombre) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
@@ -60,12 +80,16 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     /**
      * Busca pacientes activos con paginación
+     * 
+     * @param pageable
      */
     @Query("SELECT p FROM Paciente p WHERE p.estado = 'ACTIVO'")
     Page<Paciente> findAllActivos(Pageable pageable);
 
     /**
      * Cuenta la cantidad de pacientes por estado
+     * 
+     * @param estado
      */
     long countByEstado(EstadoUsuario estado);
 }

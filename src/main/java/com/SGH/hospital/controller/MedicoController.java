@@ -1,38 +1,27 @@
 package com.SGH.hospital.controller;
 
-// ==================== IMPORTS ====================
-
-// DTOs
 import com.SGH.hospital.dto.medico.MedicoRequest;
 import com.SGH.hospital.dto.medico.MedicoUpdateRequest;
 import com.SGH.hospital.dto.medico.MedicoResponse;
 import com.SGH.hospital.dto.horarioAtencion.HorarioAtencionDTO;
 
-// Enums
 import com.SGH.hospital.enums.EstadoUsuario;
 
-// Service
 import com.SGH.hospital.service.MedicoService;
 
-// Validation
 import jakarta.validation.Valid;
 
-// Spring Data
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
-// Spring Web
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-// Spring Security
 import org.springframework.security.access.prepost.PreAuthorize;
 
-// Spring Annotations
 import org.springframework.web.bind.annotation.*;
 
-// Java Collections
 import java.util.Set;
 
 // ==================== CONTROLLER ====================
@@ -47,7 +36,9 @@ public class MedicoController {
         this.medicoService = medicoService;
     }
 
+    // ============================================================
     // ==================== CRUD Básico ====================
+    // ============================================================
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -89,7 +80,9 @@ public class MedicoController {
         return ResponseEntity.noContent().build();
     }
 
-    // ==================== Especialidades ====================
+    // ============================================================
+    // Especialidades
+    // ============================================================
 
     @PutMapping("/{id}/especialidades")
     @PreAuthorize("hasRole('ADMIN')")
@@ -118,7 +111,9 @@ public class MedicoController {
         return ResponseEntity.ok(response);
     }
 
-    // ==================== Horarios ====================
+    // ============================================================
+    // Horarios 
+    // ============================================================
 
     @PutMapping("/{id}/horarios")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
@@ -138,7 +133,9 @@ public class MedicoController {
         return ResponseEntity.noContent().build();
     }
 
-    // ==================== Búsquedas y Filtros ====================
+    // ============================================================
+    // Búsquedas y Filtros
+    // ============================================================
 
     @GetMapping("/especialidad/{especialidadId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'ENFERMERO', 'PACIENTE')")
