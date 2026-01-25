@@ -1,20 +1,22 @@
-package com.SGH.hospital.entity; // Paquete de entidades del sistema
+package com.SGH.hospital.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity // Marca la clase como entidad JPA
-@DiscriminatorValue("PACIENTE") // Valor que identifica este tipo en la herencia
-public class Paciente extends Usuario { // Hereda los campos base de Usuario
+@Entity
+@DiscriminatorValue("PACIENTE")
+public class Paciente extends Usuario {
 
     @Column(name = "obra_social")
-    private String obraSocial; // Obra social del paciente
+    private String obraSocial;
 
-    @Column(nullable = false, name = "numero_afiliado") // Número obligatorio para identificar al afiliado
+    @Column(nullable = false, name = "numero_afiliado")
     private String numeroAfiliado;
 
+    //////////////////////////////////////////
     // ---------- Getters y Setters ----------
+    //////////////////////////////////////////
 
     public String getObraSocial() {
         return obraSocial;

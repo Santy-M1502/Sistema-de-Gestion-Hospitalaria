@@ -30,8 +30,9 @@ public class HorarioAtencion {
     @JoinColumn(name = "medico_id", nullable = false)
     @JsonIgnore
     private Medico medico;
-
+    //////////////////////////////////////
     // ---------- Constructores ----------
+    //////////////////////////////////////
 
     public HorarioAtencion() {}
 
@@ -42,7 +43,9 @@ public class HorarioAtencion {
         this.activo = true;
     }
 
+    //////////////////////////////////////////
     // ---------- Getters y Setters ----------
+    //////////////////////////////////////////
 
     public Long getId() {
         return id;

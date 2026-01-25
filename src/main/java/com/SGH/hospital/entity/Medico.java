@@ -8,8 +8,6 @@ import java.util.Set;
 @DiscriminatorValue("MEDICO")
 public class Medico extends Usuario {
 
-    // ==================== Campos específicos de Médico ====================
-
     @Column(nullable = false, unique = true, length = 20)
     private String matricula;
 
@@ -22,7 +20,9 @@ public class Medico extends Usuario {
     @Column(nullable = false)
     private Boolean disponible = true;
 
+    ///////////////////////////////////////////////////////
     // ==================== Relaciones ====================
+    ///////////////////////////////////////////////////////
 
     // Relación ManyToMany con Especialidad
     @ManyToMany(fetch = FetchType.LAZY)
@@ -37,13 +37,17 @@ public class Medico extends Usuario {
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<HorarioAtencion> horariosAtencion = new HashSet<>();
 
+    //////////////////////////////////////////////////////////
     // ==================== Constructores ====================
+    //////////////////////////////////////////////////////////
 
     public Medico() {
         super();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     // ==================== Métodos auxiliares para gestionar relaciones ====================
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Agrega una especialidad al médico y mantiene la bidireccionalidad

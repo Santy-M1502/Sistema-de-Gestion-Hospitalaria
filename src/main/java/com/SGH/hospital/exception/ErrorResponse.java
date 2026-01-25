@@ -17,5 +17,5 @@ public class ErrorResponse {
     private int status;
     private String error;
     private String message;
-    private Map<String, String> errors; // Para errores de validación
+    private Map<String, String> errors;
 }

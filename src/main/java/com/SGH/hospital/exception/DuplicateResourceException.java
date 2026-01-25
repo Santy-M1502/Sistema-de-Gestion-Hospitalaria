@@ -2,6 +2,9 @@ package com.SGH.hospital.exception;
 
 public class DuplicateResourceException extends RuntimeException {
     
+    /**
+     * Excepcion entidad ya existente
+     */
     public DuplicateResourceException(String message) {
         super(message);
     }

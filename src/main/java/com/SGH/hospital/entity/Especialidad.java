@@ -16,12 +16,14 @@ public class Especialidad {
     private String nombre;
 
     @Column(nullable = false)
-    private Boolean activa = true;  // ⭐ CAMPO AGREGADO
+    private Boolean activa = true;
 
     @ManyToMany(mappedBy = "especialidades", fetch = FetchType.LAZY)
     private Set<Medico> medicos = new HashSet<>();
 
+    //////////////////////////////////////////////////////////
     // ==================== Constructores ====================
+    //////////////////////////////////////////////////////////
 
     public Especialidad() {
     }
@@ -31,7 +33,9 @@ public class Especialidad {
         this.activa = true;
     }
 
+    //////////////////////////////////////////////////////////////
     // ==================== Getters y Setters ====================
+    //////////////////////////////////////////////////////////////
 
     public Long getId() {
         return id;

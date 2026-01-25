@@ -34,6 +34,9 @@ public class Turno {
     @JoinColumn(name = "medico_id")
     private Medico medico;
 
+    ///////////////////////////////////////////
+    //---------------Constructor---------------
+    ///////////////////////////////////////////
     public Turno(){}
 
     public Turno(String motivo, Paciente paciente, Medico medico){
@@ -44,6 +47,10 @@ public class Turno {
         this.paciente = paciente;
         this.medico = medico;
     }
+
+    //////////////////////////////////////////
+    // ---------- Getters y Setters ----------
+    //////////////////////////////////////////
 
     public Long getId(){
         return id;

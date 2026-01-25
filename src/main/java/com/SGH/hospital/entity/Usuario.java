@@ -27,12 +27,12 @@ public abstract class Usuario {
     @Column(length = 100)
     private String apellido;
     
-    private String dni;           // DNI del usuario
-    private String telefono;      // Teléfono del usuario
-    private String direccion;     // Dirección del usuario
+    private String dni;
+    private String telefono;
+    private String direccion;
 
     @Column(name="fecha_nacimiento")
-    private LocalDate fechaNacimiento; // Fecha de nacimiento
+    private LocalDate fechaNacimiento;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -53,7 +53,9 @@ public abstract class Usuario {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    //////////////////////////////////////////
     // ---------- Getters y Setters ----------
+    //////////////////////////////////////////
 
     public Long getId() {
         return id;

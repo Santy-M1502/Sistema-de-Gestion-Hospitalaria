@@ -2,6 +2,9 @@ package com.SGH.hospital.exception;
 
 public class PacienteNotFoundException extends RuntimeException {
     
+    /**
+     * Excepcion Paciente no encontrado y variables
+     */
     public PacienteNotFoundException(String message) {
         super(message);
     }
