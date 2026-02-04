@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
@@ -92,4 +93,19 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
      * @return true si ya existe un turno en ese horario, false si está disponible
      */
     boolean existsByMedicoIdAndFechaAndHora(Long medicoId, LocalDate fecha, LocalDateTime hora);
+
+    /**
+     * Obtiene un turno por ID con sus relaciones eagerly cargadas (fetch join).
+     * Evita LazyInitializationException al acceder a paciente y médico fuera de sesión.
+     *
+     * @param turnoId identificador del turno
+     * @return Optional con el turno y sus relaciones cargadas
+     */
+    @Query("""
+        SELECT DISTINCT t FROM Turno t
+        LEFT JOIN FETCH t.paciente
+        LEFT JOIN FETCH t.medico
+        WHERE t.id = :turnoId
+        """)
+    Optional<Turno> findByIdWithRelations(@Param("turnoId") Long turnoId);
 }

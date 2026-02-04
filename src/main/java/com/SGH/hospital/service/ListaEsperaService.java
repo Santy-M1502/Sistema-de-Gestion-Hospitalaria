@@ -1,11 +1,14 @@
 package com.SGH.hospital.service;
 
+import com.SGH.hospital.dto.listaEspera.ListaEsperaResponse;
 import com.SGH.hospital.entity.*;
 import com.SGH.hospital.enums.EstadoTurno;
 import com.SGH.hospital.enums.TipoNotificacion;
 import com.SGH.hospital.repository.*;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -75,8 +78,10 @@ public class ListaEsperaService {
     }
 
     // Obtener lista del día
-    public java.util.List<ListaEspera> obtenerListaDelDia(LocalDate fecha) {
-        return listaEsperaRepository.findByFechaSolicitada(fecha);
+    public Page<ListaEsperaResponse> obtenerListaDelDia(LocalDate fecha, Pageable pageable) {
+        return listaEsperaRepository
+                .findByFechaSolicitada(fecha, pageable)
+                .map(ListaEsperaResponse::new);
     }
 
     public void turnoConfirmado(Turno turno){

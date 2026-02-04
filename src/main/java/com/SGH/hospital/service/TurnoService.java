@@ -134,6 +134,7 @@ public class TurnoService {
 
     /**
      * Busca y retorna un turno por su ID.
+     * Carga el turno con sus relaciones (paciente, médico) para evitar LazyInitializationException.
      *
      * @param turnoId ID del turno
      * @return Turno encontrado
@@ -141,7 +142,7 @@ public class TurnoService {
      * @throws RuntimeException si no existe
      */
     public Turno getTurnoPorId(Long turnoId){
-        return turnoRepository.findById(turnoId)
+        return turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
     }
 

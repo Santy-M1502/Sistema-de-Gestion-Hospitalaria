@@ -27,8 +27,8 @@ public class ListaEspera {
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
-    @Column(nullable = false)
-    private LocalDate fecha_solicitada;
+    @Column(name = "fecha_solicitada", nullable = false)
+    private LocalDate fechaSolicitada;
 
     ////////////////////////////////////////////////////////
     //================== Constructor========================
@@ -38,7 +38,7 @@ public class ListaEspera {
     public ListaEspera(Paciente paciente, Medico medico, LocalDate fechaSolicitda){
         this.paciente = paciente;
         this.medico = medico;
-        this.fecha_solicitada = fechaSolicitda;
+        this.fechaSolicitada = fechaSolicitda;
     }
 
     //////////////////////////////////////////////////////////
@@ -66,10 +66,10 @@ public class ListaEspera {
     }
 
     public LocalDate getFechaSolicitada(){
-        return fecha_solicitada;
+        return fechaSolicitada;
     }
 
     public void setFechaSolicitada(LocalDate fecha_solicitada){
-        this.fecha_solicitada = fecha_solicitada;
+        this.fechaSolicitada = fecha_solicitada;
     }
 }

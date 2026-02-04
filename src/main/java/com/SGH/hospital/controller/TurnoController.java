@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.SGH.hospital.dto.turno.TurnoResponse;
 
 @RestController
 @RequestMapping("/api/turnos")
@@ -24,14 +27,14 @@ public class TurnoController {
     // ============================================================
 
     @PostMapping("/agendar")
-    public Turno agendarTurno(
+    public TurnoResponse agendarTurno(
             @RequestParam Long pacienteId,
             @RequestParam Long medicoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hora,
             @RequestParam String motivo
     ) {
-        return turnoService.agendarTurno(pacienteId, medicoId, fecha, hora, motivo);
+        return new TurnoResponse(turnoService.agendarTurno(pacienteId, medicoId, fecha, hora, motivo));
     }
 
     // ============================================================
@@ -39,23 +42,23 @@ public class TurnoController {
     // ============================================================
 
     @PutMapping("/{id}/cancelar")
-    public Turno cancelarTurno(@PathVariable Long id) {
-        return turnoService.cancelarTurno(id);
+    public TurnoResponse cancelarTurno(@PathVariable Long id) {
+        return new TurnoResponse(turnoService.cancelarTurno(id));
     }
 
     @PutMapping("/{id}/confirmar")
-    public Turno confirmarTurno(@PathVariable Long id) {
-        return turnoService.confirmarTurno(id);
+    public TurnoResponse confirmarTurno(@PathVariable Long id) {
+        return new TurnoResponse(turnoService.confirmarTurno(id));
     }
 
     @PutMapping("/{id}/completar")
-    public Turno completarTurno(@PathVariable Long id) {
-        return turnoService.completarTurno(id);
+    public TurnoResponse completarTurno(@PathVariable Long id) {
+        return new TurnoResponse(turnoService.completarTurno(id));
     }
 
     @PutMapping("/{id}/ausente")
-    public Turno marcarAusente(@PathVariable Long id) {
-        return turnoService.ausentarTurno(id);
+    public TurnoResponse marcarAusente(@PathVariable Long id) {
+        return new TurnoResponse(turnoService.ausentarTurno(id));
     }
 
     // ============================================================
@@ -63,34 +66,44 @@ public class TurnoController {
     // ============================================================
 
     @GetMapping("/{id}")
-    public Turno getTurnoPorId(@PathVariable Long id) {
-        return turnoService.getTurnoPorId(id);
+    public TurnoResponse getTurnoPorId(@PathVariable Long id) {
+        return new TurnoResponse(turnoService.getTurnoPorId(id));
     }
 
     @GetMapping("/paciente/{pacienteId}")
-    public List<Turno> listarTurnosDePaciente(@PathVariable Long pacienteId) {
-        return turnoService.listarTurnosDePaciente(pacienteId);
+    public List<TurnoResponse> listarTurnosDePaciente(@PathVariable Long pacienteId) {
+        return turnoService.listarTurnosDePaciente(pacienteId).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/medico/{medicoId}")
-    public List<Turno> listarTurnosDeMedico(@PathVariable Long medicoId) {
-        return turnoService.listarTurnosDeMedico(medicoId);
+    public List<TurnoResponse> listarTurnosDeMedico(@PathVariable Long medicoId) {
+        return turnoService.listarTurnosDeMedico(medicoId).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/fecha")
-    public List<Turno> listarTurnosPorFecha(
+    public List<TurnoResponse> listarTurnosPorFecha(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
-        return turnoService.listarTurnosPorFecha(fecha);
+        return turnoService.listarTurnosPorFecha(fecha).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/estado")
-    public List<Turno> listarTurnosPorEstado(@RequestParam EstadoTurno estado) {
-        return turnoService.listarTurnosPorEstado(estado);
+    public List<TurnoResponse> listarTurnosPorEstado(@RequestParam EstadoTurno estado) {
+        return turnoService.listarTurnosPorEstado(estado).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/medico/{medicoId}/proximos")
-    public List<Turno> listarProximosTurnosDeMedico(@PathVariable Long medicoId) {
-        return turnoService.listarProximosTurnosDeMedico(medicoId);
+    public List<TurnoResponse> listarProximosTurnosDeMedico(@PathVariable Long medicoId) {
+        return turnoService.listarProximosTurnosDeMedico(medicoId).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/medico/{medicoId}/contar")
@@ -101,7 +114,9 @@ public class TurnoController {
     }
 
     @GetMapping("/paciente/{pacienteId}/historial")
-    public List<Turno> historialPaciente(@PathVariable Long pacienteId) {
-        return turnoService.listarHistorialDePaciente(pacienteId);
+    public List<TurnoResponse> historialPaciente(@PathVariable Long pacienteId) {
+        return turnoService.listarHistorialDePaciente(pacienteId).stream()
+                .map(TurnoResponse::new)
+                .collect(Collectors.toList());
     }
 }

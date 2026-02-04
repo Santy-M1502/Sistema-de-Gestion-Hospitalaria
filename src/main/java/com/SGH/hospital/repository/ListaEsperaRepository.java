@@ -6,6 +6,8 @@ import com.SGH.hospital.entity.ListaEspera;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,19 +34,19 @@ public interface ListaEsperaRepository extends JpaRepository<ListaEspera, Long> 
     /**
      * Obtener los de un día
      * 
-     * @param fechaSolicitada
+     * @param fecha_solicitada
      * @return
      */
-    List<ListaEspera> findByFechaSolicitada(LocalDate fechaSolicitada);
+    Page<ListaEspera> findByFechaSolicitada(LocalDate fecha, Pageable pageable);
 
     /**
      * Obtener de un médico en un día
      * 
      * @param medicoId
-     * @param fechaSolicitada
+     * @param fecha_solicitada
      * @return
      */
-    List<ListaEspera> findByMedicoIdAndFechaSolicitada(Long medicoId, LocalDate fechaSolicitada);
+    List<ListaEspera> findByMedicoIdAndFechaSolicitada(Long medicoId, LocalDate fecha_solicitada);
 
     /**
      * Ordenados (el primero es el siguiente en recibir un turno)
@@ -85,7 +87,7 @@ public interface ListaEsperaRepository extends JpaRepository<ListaEspera, Long> 
      * @param fecha
      * @return
      */
-    @Query("SELECT l FROM ListaEspera l WHERE l.fecha_solicitada = :fecha ORDER BY l.id ASC")
+    @Query("SELECT l FROM ListaEspera l WHERE l.fechaSolicitada = :fecha ORDER BY l.id ASC")
     List<ListaEspera> findListaCompletaPorDia(@Param("fecha") LocalDate fecha);
 
     /**
@@ -99,8 +101,8 @@ public interface ListaEsperaRepository extends JpaRepository<ListaEspera, Long> 
     /**
      * Obtener cantidad de personas esperando un día
      * 
-     * @param fechaSolicitada
+     * @param fecha_solicitada
      * @return
      */
-    long countByFechaSolicitada(LocalDate fechaSolicitada);
+    long countByFechaSolicitada(LocalDate fecha_solicitada);
 }

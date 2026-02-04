@@ -4,13 +4,16 @@ import com.SGH.hospital.entity.ListaEspera;
 import com.SGH.hospital.entity.Turno;
 import com.SGH.hospital.service.ListaEsperaService;
 import com.SGH.hospital.repository.TurnoRepository;
+import com.SGH.hospital.dto.listaEspera.ListaEsperaResponse;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/lista-espera")
@@ -24,26 +27,35 @@ public class ListaEsperaController {
 
     // Agregar paciente a la lista
     @PostMapping("/agregar")
-    public ListaEspera agregar(
+    public ResponseEntity<?> agregar(
             @RequestParam Long pacienteId,
             @RequestParam Long medicoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSolicitada
     ) {
-        return listaEsperaService.agregarALaLista(pacienteId, medicoId, fechaSolicitada);
+        listaEsperaService.agregarALaLista(pacienteId, medicoId, fechaSolicitada);
+        return ResponseEntity.ok().build();
     }
 
     // Obtener lista de un día
     @GetMapping("/dia")
-    public List<ListaEspera> obtenerPorDia(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha
+    public ResponseEntity<Page<ListaEsperaResponse>> obtenerPorDia(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            Pageable pageable
     ) {
-        return listaEsperaService.obtenerListaDelDia(fecha);
+        Page<ListaEsperaResponse> response =
+                listaEsperaService.obtenerListaDelDia(fecha, pageable);
+
+        return ResponseEntity.ok(response);
     }
 
     // Obtener el siguiente paciente en la lista
     @GetMapping("/siguiente")
-    public ListaEspera siguiente(@RequestParam Long medicoId) {
-        return listaEsperaService.obtenerSiguiente(medicoId);
+    public ResponseEntity<?> siguiente(@RequestParam Long medicoId) {
+        ListaEspera siguiente = listaEsperaService.obtenerSiguiente(medicoId);
+        if (siguiente == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(new ListaEsperaResponse(siguiente));
     }
 
     // Ejecutar la lógica cuando un turno se cancela
@@ -58,7 +70,7 @@ public class ListaEsperaController {
     // Confirmación
     @PostMapping("/notificacion/confirmacion")
     public String confirmar(@RequestParam Long turnoId) {
-        Turno turno = turnoRepository.findById(turnoId)
+        Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
 
         listaEsperaService.turnoConfirmado(turno);
@@ -68,7 +80,7 @@ public class ListaEsperaController {
     // Aviso 24h
     @PostMapping("/notificacion/24h")
     public String aviso24(@RequestParam Long turnoId) {
-        Turno turno = turnoRepository.findById(turnoId)
+        Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
 
         listaEsperaService.aviso24(turno);
@@ -78,7 +90,7 @@ public class ListaEsperaController {
     // Aviso 2h
     @PostMapping("/notificacion/2h")
     public String aviso2(@RequestParam Long turnoId) {
-        Turno turno = turnoRepository.findById(turnoId)
+        Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
 
         listaEsperaService.aviso2(turno);
