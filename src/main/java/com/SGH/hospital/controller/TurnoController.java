@@ -1,6 +1,5 @@
 package com.SGH.hospital.controller;
 
-import com.SGH.hospital.entity.Turno;
 import com.SGH.hospital.enums.EstadoTurno;
 import com.SGH.hospital.service.TurnoService;
 
