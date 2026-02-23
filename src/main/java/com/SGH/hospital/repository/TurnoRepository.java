@@ -108,4 +108,18 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
         WHERE t.id = :turnoId
         """)
     Optional<Turno> findByIdWithRelations(@Param("turnoId") Long turnoId);
+
+        @Query("SELECT t FROM Turno t WHERE t.hora BETWEEN :desde AND :hasta AND t.estado = :estado AND t.recordatorio24hEnviado = false")
+    List<Turno> findTurnosParaRecordatorio24h(
+        @Param("desde") LocalDateTime desde,
+        @Param("hasta") LocalDateTime hasta,
+        @Param("estado") EstadoTurno estado
+    );
+
+    @Query("SELECT t FROM Turno t WHERE t.hora BETWEEN :desde AND :hasta AND t.estado = :estado AND t.recordatorio2hEnviado = false")
+    List<Turno> findTurnosParaRecordatorio2h(
+        @Param("desde") LocalDateTime desde,
+        @Param("hasta") LocalDateTime hasta,
+        @Param("estado") EstadoTurno estado
+    );
 }

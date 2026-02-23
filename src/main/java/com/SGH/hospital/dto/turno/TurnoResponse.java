@@ -3,11 +3,7 @@ package com.SGH.hospital.dto.turno;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.SGH.hospital.dto.medico.MedicoResponse;
-import com.SGH.hospital.dto.paciente.PacienteResponse;
-import com.SGH.hospital.entity.Medico;
 import com.SGH.hospital.entity.Turno;
-import com.SGH.hospital.entity.Paciente;
 
 public class TurnoResponse {
 

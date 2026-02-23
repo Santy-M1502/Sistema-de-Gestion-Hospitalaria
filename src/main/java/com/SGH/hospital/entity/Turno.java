@@ -26,6 +26,12 @@ public class Turno {
     @Column(name = "motivo_consulta")
     private String motivoConsulta;
 
+    @Column(name = "recordatorio_24h_enviado")
+    private boolean recordatorio24hEnviado = false;
+
+    @Column(name = "recordatorio_2h_enviado")
+    private boolean recordatorio2hEnviado = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
@@ -106,5 +112,21 @@ public class Turno {
 
     public void setMedico(Medico medico){
         this.medico = medico;
+    }
+
+    public boolean isRecordatorio24hEnviado() {
+        return recordatorio24hEnviado;
+    }
+
+    public void setRecordatorio24hEnviado(boolean recordatorio24hEnviado) {
+        this.recordatorio24hEnviado = recordatorio24hEnviado;
+    }
+
+    public boolean isRecordatorio2hEnviado() {
+        return recordatorio2hEnviado;
+    }
+
+    public void setRecordatorio2hEnviado(boolean recordatorio2hEnviado) {
+        this.recordatorio2hEnviado = recordatorio2hEnviado;
     }
 }

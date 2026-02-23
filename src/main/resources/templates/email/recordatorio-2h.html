@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recordatorio de turno</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .info {
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #444;
+        }
+        .box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>Recordatorio de turno médico</h2>
+
+    <p class="info">
+        Hola <strong th:text="${nombrePaciente}">Paciente</strong>,
+        te recordamos que tienes un turno programado dentro de 2 horas.
+    </p>
+
+    <div class="box">
+        <p><strong>Médico:</strong> <span th:text="${nombreMedico}">Medico</span></p>
+        <p><strong>Fecha:</strong> <span th:text="${fecha}">01/01/2026</span></p>
+        <p><strong>Hora:</strong> <span th:text="${hora}">10:00</span></p>
+    </div>
+
+    <p class="info">
+        Si no puedes asistir, por favor cancela el turno desde el siguiente botón:
+    </p>
+
+    <a class="btn" th:href="${linkCancelar}">
+        Cancelar turno
+    </a>
+
+    <div class="footer">
+        <p>Este es un mensaje automático. Por favor no respondas este correo.</p>
+    </div>
+
+</div>
+</body>
+</html>
