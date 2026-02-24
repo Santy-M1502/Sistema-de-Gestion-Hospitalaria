@@ -25,6 +25,7 @@ public class TurnoDTO {
     private String medicoNombre;
     private String medicoApellido;
     private String medicoEspecialidades;
+    private String medicoEmail;
 
     private boolean recordatorio24hEnviado;
     private boolean recordatorio2hEnviado;
@@ -78,4 +79,11 @@ public class TurnoDTO {
 
     public String getMedicoEspecialidades() { return medicoEspecialidades; }
     public void setMedicoEspecialidades(String medicoEspecialidades) { this.medicoEspecialidades = medicoEspecialidades; }
+
+    public String getMedicoEmail() {
+        return medicoEmail;
+    }
+    public void setMedicoEmail(String medicoEmail) {
+        this.medicoEmail = medicoEmail;
+    }
 }

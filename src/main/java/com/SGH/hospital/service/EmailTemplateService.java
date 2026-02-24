@@ -32,6 +32,11 @@ public class EmailTemplateService {
         return templateEngine.process("email/recordatorio-2h", context);
     }
 
+    public String procesarRecordatorioMedico(TurnoDTO data){
+        Context context = baseContext(data);
+        return templateEngine.process("email/recordatorio-medico", context);
+    }
+
     private Context baseContext(TurnoDTO data) {
         Context context = new Context();
         context.setVariable("nombrePaciente", data.getPacienteNombre());

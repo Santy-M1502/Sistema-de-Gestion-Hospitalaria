@@ -122,4 +122,9 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
         @Param("hasta") LocalDateTime hasta,
         @Param("estado") EstadoTurno estado
     );
+
+    @Query("SELECT t FROM Turno t WHERE t.hora < :limite AND t.estado = com.SGH.hospital.enums.EstadoTurno.PENDIENTE")
+    List<Turno> findTurnosParaAusentes(
+        @Param("limite") LocalDateTime limite
+    );
 }

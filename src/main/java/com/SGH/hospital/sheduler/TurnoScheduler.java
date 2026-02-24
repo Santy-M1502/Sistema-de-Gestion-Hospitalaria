@@ -5,54 +5,52 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.SGH.hospital.mapper.TurnoMapper;
 import com.SGH.hospital.entity.Turno;
 import com.SGH.hospital.enums.EstadoTurno;
-import com.SGH.hospital.mapper.TurnoMapper;
 import com.SGH.hospital.repository.TurnoRepository;
 import com.SGH.hospital.service.EmailService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class RecordatorioScheduler {
-
+public class TurnoScheduler {
+    
     private final TurnoRepository turnoRepository;
-    private final EmailService emailService;
+    private final  EmailService emailService;
     private final TurnoMapper turnoMapper;
 
     @Transactional
-    @Scheduled(cron = "0 * */1 * * *")
-    public void enviarRecordatorios24h() {
+    @Scheduled(cron = "0 0 0 * * *")
+    public void enviarRecordatorios() {
         LocalDateTime desde = LocalDateTime.now().plusHours(23);
         LocalDateTime hasta = LocalDateTime.now().plusHours(25);
 
         List<Turno> turnos = turnoRepository.findTurnosParaRecordatorio24h(desde, hasta, EstadoTurno.PENDIENTE);
 
-
-        turnos.forEach(turno -> {
-            emailService.enviarRecordatorio24h(turnoMapper.toDTO(turno));
+        turnos.forEach(turno ->{
+            emailService.enviarRecordatorioMedico(turnoMapper.toDTO(turno));
             turno.setRecordatorio24hEnviado(true);
         });
         turnoRepository.saveAll(turnos);
     }
 
     @Transactional
-    @Scheduled(cron = "0 * */1 * * *")
-    public void enviarRecordatorios2h() {
-        LocalDateTime desde = LocalDateTime.now().plusHours(1);
-        LocalDateTime hasta = LocalDateTime.now().plusHours(3);
+    @Scheduled(cron = "0 */10 * * * *")
+    public void marcarAusentes() {
+        LocalDateTime limite = LocalDateTime.now().minusMinutes(30);
 
-        List<Turno> turnos = turnoRepository.findTurnosParaRecordatorio2h(desde, hasta, EstadoTurno.PENDIENTE);
+        List<Turno> turnos = turnoRepository.findTurnosParaAusentes(limite);
 
         turnos.forEach(turno -> {
-            emailService.enviarRecordatorio2h(turnoMapper.toDTO(turno));
-            turno.setRecordatorio2hEnviado(true);
+            turno.setEstado(EstadoTurno.AUSENTE);
         });
         turnoRepository.saveAll(turnos);
+        log.info("Turnos marcados como ausentes: {}", turnos.size());
     }
 }

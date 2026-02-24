@@ -41,6 +41,12 @@ public class EmailService {
         enviar(data.getPacienteEmail(), "Recordatorio: tu turno es en 2 horas", html);
     }
 
+    @Async("emailExecutor")
+    public void enviarRecordatorioMedico(TurnoDTO data){
+        String html = templateService.procesarRecordatorioMedico(data);
+        enviar(data.getMedicoEmail(), "Recordatorio: tienes un turno en las siguientes 24 horas", html);
+    }
+
     private void enviar(String para, String asunto, String htmlContent) {
         try {
             // MimeMessage es el email en formato MIME (soporta HTML, adjuntos, etc)
