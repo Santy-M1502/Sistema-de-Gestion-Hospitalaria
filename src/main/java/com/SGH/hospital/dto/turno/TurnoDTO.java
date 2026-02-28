@@ -13,14 +13,12 @@ public class TurnoDTO {
     private EstadoTurno estado;
     private String motivoConsulta;
 
-    // DATOS PACIENTE (no entidad)
     private Long pacienteId;
     private String pacienteNombre;
     private String pacienteApellido;
     private String pacienteEmail;
     private String pacienteDireccion;
 
-    // DATOS MEDICO (no entidad)
     private Long medicoId;
     private String medicoNombre;
     private String medicoApellido;

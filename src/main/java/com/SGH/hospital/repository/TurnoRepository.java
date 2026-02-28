@@ -109,13 +109,27 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
         """)
     Optional<Turno> findByIdWithRelations(@Param("turnoId") Long turnoId);
 
-        @Query("SELECT t FROM Turno t WHERE t.hora BETWEEN :desde AND :hasta AND t.estado = :estado AND t.recordatorio24hEnviado = false")
+    /**
+     * Obtiene los turnos que se encuentran entre dos fechas y horas específicas, con un estado determinado, y que aún no han recibido el recordatorio de 24 horas.
+     * @param desde
+     * @param hasta
+     * @param estado
+     * @return
+     */
+    @Query("SELECT t FROM Turno t WHERE t.hora BETWEEN :desde AND :hasta AND t.estado = :estado AND t.recordatorio24hEnviado = false")
     List<Turno> findTurnosParaRecordatorio24h(
         @Param("desde") LocalDateTime desde,
         @Param("hasta") LocalDateTime hasta,
         @Param("estado") EstadoTurno estado
     );
 
+    /**
+     * Obtiene los turnos que se encuentran entre dos fechas y horas específicas, con un estado determinado, y que aún no han recibido el recordatorio de 2 horas.
+     * @param desde
+     * @param hasta
+     * @param estado
+     * @return
+     */
     @Query("SELECT t FROM Turno t WHERE t.hora BETWEEN :desde AND :hasta AND t.estado = :estado AND t.recordatorio2hEnviado = false")
     List<Turno> findTurnosParaRecordatorio2h(
         @Param("desde") LocalDateTime desde,
@@ -123,6 +137,11 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
         @Param("estado") EstadoTurno estado
     );
 
+    /**
+     * Obtiene los turnos pendientes que se encuentran antes de una fecha y hora límite.
+     * @param limite
+     * @return
+     */
     @Query("SELECT t FROM Turno t WHERE t.hora < :limite AND t.estado = com.SGH.hospital.enums.EstadoTurno.PENDIENTE")
     List<Turno> findTurnosParaAusentes(
         @Param("limite") LocalDateTime limite
