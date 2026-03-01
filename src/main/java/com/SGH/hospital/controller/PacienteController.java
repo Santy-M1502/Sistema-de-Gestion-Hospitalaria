@@ -3,7 +3,11 @@ package com.SGH.hospital.controller;
 import com.SGH.hospital.dto.paciente.PacienteRequest;
 import com.SGH.hospital.dto.paciente.PacienteResponse;
 import com.SGH.hospital.dto.paciente.PacienteUpdateRequest;
+import com.SGH.hospital.entity.Consulta;
+import com.SGH.hospital.entity.HistoriaClinica;
 import com.SGH.hospital.enums.EstadoUsuario;
+import com.SGH.hospital.service.ConsultaService;
+import com.SGH.hospital.service.HistoriaClinicaService;
 import com.SGH.hospital.service.PacienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,6 +30,8 @@ import java.util.Map;
 public class PacienteController {
 
     private final PacienteService pacienteService;
+    private final HistoriaClinicaService historiaClinicaService;
+    private final ConsultaService consultaService;
 
     // ============================================================
     // Crear paciente
@@ -170,5 +177,19 @@ public class PacienteController {
         stats.put("suspendidos", pacienteService.contarPorEstado(EstadoUsuario.SUSPENDIDO));
         
         return ResponseEntity.ok(stats);
+    }
+
+    // ============================================================
+    // DatosPaciente
+    // ============================================================
+
+    @GetMapping("/{id}/historia-clinica")
+    public ResponseEntity<HistoriaClinica> getHistoriaClinica(@PathVariable Long id) {
+        return ResponseEntity.ok(historiaClinicaService.buscarPorPacienteId(id));
+    }
+
+    @GetMapping("/{id}/consultas")
+    public ResponseEntity<List<Consulta>> getConsultas(@PathVariable Long id) {
+        return ResponseEntity.ok(consultaService.listarConsultasDePaciente(id));
     }
 }

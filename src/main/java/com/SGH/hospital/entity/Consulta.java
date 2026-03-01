@@ -1,124 +1,70 @@
 package com.SGH.hospital.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "consulta")
 public class Consulta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "motivo")
-    private String motivo;
-
-    @Column(name = "diagnostico")
-    private String diagnostico;
-
-    @Column(name = "observaciones")
-    private String observaciones;
-
-    @Column(name = "tratamiento")
-    private String tratamiento;
-
-    @Column(name = "fecha")
-    private String fecha;
-
-    @Column(name = "medico")
-    private String medico;
-
-    @Column(name = "signos_vitales")
-    private String signosVitales;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "turno_id")
+    @OneToOne
+    @JoinColumn(name = "turno_id", nullable = false, unique = true)
     private Turno turno;
 
-    ///////////////////////////////////////////
-    //---------------Constructor---------------
-    ///////////////////////////////////////////
-    public Consulta(){} 
-    
-    public Consulta(String motivo, String diagnostico, String observaciones, String tratamiento, String fecha, String medico, String signosVitales, Turno turno) {
-        this.motivo = motivo;
-        this.diagnostico = diagnostico;
-        this.observaciones = observaciones;
-        this.tratamiento = tratamiento;
-        this.fecha = fecha;
-        this.medico = medico;
-        this.signosVitales = signosVitales;
-        this.turno = turno;
-    }
+    @ManyToOne
+    @JoinColumn(name = "medico_id", nullable = false)
+    private Medico medico;
 
-    //////////////////////////////////////////
-    // ---------- Getters y Setters ----------
-    //////////////////////////////////////////
-    
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "fecha", nullable = false)
+    private LocalDateTime fecha;
 
-    public String getMotivo() {
-        return motivo;
-    }
+    @Column(name = "motivo", columnDefinition = "TEXT")
+    private String motivo;
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
+    @Column(name = "diagnostico", columnDefinition = "TEXT")
+    private String diagnostico;
 
-    public String getDiagnostico() {
-        return diagnostico;
-    }
+    @Column(name = "observaciones", columnDefinition = "TEXT")
+    private String observaciones;
 
-    public void setDiagnostico(String diagnostico) {
-        this.diagnostico = diagnostico;
-    }
+    @Column(name = "tratamiento", columnDefinition = "TEXT")
+    private String tratamiento;
 
-    public String getObservaciones() {
-        return observaciones;
-    }
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "signos_vitales_id")
+    private SignosVitales signosVitales;
 
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
+    // Constructor vacío
+    public Consulta() {}
 
-    public String getTratamiento() {
-        return tratamiento;
-    }
+    // Getters y Setters
+    public Long getId() { return id; }
 
-    public void setTratamiento(String tratamiento) {
-        this.tratamiento = tratamiento;
-    }
+    public Turno getTurno() { return turno; }
+    public void setTurno(Turno turno) { this.turno = turno; }
 
-    public String getFecha() {
-        return fecha;
-    }
+    public Medico getMedico() { return medico; }
+    public void setMedico(Medico medico) { this.medico = medico; }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
+    public LocalDateTime getFecha() { return fecha; }
+    public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
 
-    public String getMedico() {
-        return medico;
-    }
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    public void setMedico(String medico) {
-        this.medico = medico;
-    }
+    public String getDiagnostico() { return diagnostico; }
+    public void setDiagnostico(String diagnostico) { this.diagnostico = diagnostico; }
 
-    public String getSignosVitales() {
-        return signosVitales;
-    }
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 
-    public void setSignosVitales(String signosVitales) {
-        this.signosVitales = signosVitales;
-    }
+    public String getTratamiento() { return tratamiento; }
+    public void setTratamiento(String tratamiento) { this.tratamiento = tratamiento; }
 
-    public Turno getTurno() {
-        return turno;
-    }
-
-    public void setTurno(Turno turno) {
-        this.turno = turno;
-    }
+    public SignosVitales getSignosVitales() { return signosVitales; }
+    public void setSignosVitales(SignosVitales signosVitales) { this.signosVitales = signosVitales; }
 }

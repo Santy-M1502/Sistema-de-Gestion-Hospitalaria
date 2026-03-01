@@ -2,11 +2,12 @@ package com.SGH.hospital.controller;
 
 import com.SGH.hospital.dto.medico.MedicoRequest;
 import com.SGH.hospital.dto.medico.MedicoUpdateRequest;
+import com.SGH.hospital.entity.Consulta;
 import com.SGH.hospital.dto.medico.MedicoResponse;
 import com.SGH.hospital.dto.horarioAtencion.HorarioAtencionDTO;
 
 import com.SGH.hospital.enums.EstadoUsuario;
-
+import com.SGH.hospital.service.ConsultaService;
 import com.SGH.hospital.service.MedicoService;
 
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 // ==================== CONTROLLER ====================
@@ -31,9 +33,11 @@ import java.util.Set;
 public class MedicoController {
 
     private final MedicoService medicoService;
+    private final ConsultaService consultaService;
 
-    public MedicoController(MedicoService medicoService) {
+    public MedicoController(MedicoService medicoService, ConsultaService consultaService) {
         this.medicoService = medicoService;
+        this.consultaService = consultaService;
     }
 
     // ============================================================
@@ -152,5 +156,14 @@ public class MedicoController {
             @PageableDefault(size = 10) Pageable pageable) {
         Page<MedicoResponse> response = medicoService.buscarDisponibles(pageable);
         return ResponseEntity.ok(response);
+    }
+
+    // ============================================================
+    // Lista Consultas
+    // ============================================================
+
+    @GetMapping("/{id}/consultas")
+    public ResponseEntity<List<Consulta>> getConsultas(@PathVariable Long id) {
+        return ResponseEntity.ok(consultaService.listarConsultasDeMedico(id));
     }
 }
