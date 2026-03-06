@@ -11,19 +11,14 @@ import java.util.List;
 @Repository
 public interface SignosVitalesRepository extends JpaRepository<SignosVitales, Long> {
 
-    // Busca registros con temperatura mayor a la indicada (fiebre, etc.)
-    List<SignosVitales> findByTemperaturaGreaterThan(Double temperatura);
+    List<SignosVitales> findByTemperaturaGreaterThan(Double umbral);
 
-    // Busca registros con saturación menor a la indicada (hipoxia, etc.)
-    List<SignosVitales> findBySaturacionOxigenoLessThan(Integer saturacion);
+    List<SignosVitales> findBySaturacionOxigenoLessThan(Integer umbral);
 
-    // Busca registros con frecuencia cardíaca fuera del rango normal
-    @Query("SELECT s FROM SignosVitales s WHERE s.frecuenciaCardiaca < :min OR s.frecuenciaCardiaca > :max")
-    List<SignosVitales> findFrecuenciaFueraDeRango(@Param("min") Integer min, @Param("max") Integer max);
-
-    // Busca registros con IMC mayor al indicado
     List<SignosVitales> findByImcGreaterThan(Double imc);
 
-    // Busca registros con IMC entre dos valores
     List<SignosVitales> findByImcBetween(Double imcMin, Double imcMax);
+
+    @Query("SELECT s FROM SignosVitales s WHERE s.frecuenciaCardiaca < :min OR s.frecuenciaCardiaca > :max")
+    List<SignosVitales> findFrecuenciaFueraDeRango(@Param("min") Integer min, @Param("max") Integer max);
 }

@@ -1,8 +1,10 @@
 package com.SGH.hospital.service;
 
+import com.SGH.hospital.dto.signosVitales.signosVitalesRequest;
+import com.SGH.hospital.dto.signosVitales.signosVitalesResponse;
 import com.SGH.hospital.entity.SignosVitales;
-import com.SGH.hospital.exception.BadRequestException;
 import com.SGH.hospital.exception.ResourceNotFoundException;
+import com.SGH.hospital.mapper.SignosVitalesMapper;
 import com.SGH.hospital.repository.SignosVitalesRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,63 +14,52 @@ import java.util.List;
 public class SignosVitalesService {
 
     private final SignosVitalesRepository signosVitalesRepository;
+    private final SignosVitalesMapper signosVitalesMapper;
 
-    public SignosVitalesService(SignosVitalesRepository signosVitalesRepository) {
+    public SignosVitalesService(SignosVitalesRepository signosVitalesRepository,
+                                SignosVitalesMapper signosVitalesMapper) {
         this.signosVitalesRepository = signosVitalesRepository;
+        this.signosVitalesMapper = signosVitalesMapper;
     }
 
-    /**
-     * Crea y guarda un registro de signos vitales.
-     * El IMC se calcula automáticamente en la entidad al setear peso y altura.
-     */
-    public SignosVitales guardarSignosVitales(SignosVitales signosVitales) {
-        if (signosVitales == null) {
-            throw new BadRequestException("Los signos vitales no pueden ser nulos");
-        }
-        return signosVitalesRepository.save(signosVitales);
+    public signosVitalesResponse guardar(signosVitalesRequest request) {
+        SignosVitales entidad = signosVitalesMapper.toEntity(request);
+        return signosVitalesMapper.toResponse(signosVitalesRepository.save(entidad));
     }
 
-    public SignosVitales buscarPorId(Long id) {
-        return signosVitalesRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Signos vitales con id " + id + " no encontrados"));
+    public signosVitalesResponse buscarPorId(Long id) {
+        return signosVitalesMapper.toResponse(
+                signosVitalesRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Signos vitales con id " + id + " no encontrados")));
     }
 
-    /**
-     * Busca registros con temperatura mayor a la indicada.
-     * Útil para detectar pacientes con fiebre (> 37.5°C).
-     */
-    public List<SignosVitales> buscarConFiebre(Double umbral) {
-        return signosVitalesRepository.findByTemperaturaGreaterThan(umbral);
+    public List<signosVitalesResponse> buscarConFiebre(Double umbral) {
+        return signosVitalesRepository.findByTemperaturaGreaterThan(umbral)
+                .stream().map(signosVitalesMapper::toResponse).toList();
     }
 
-    /**
-     * Busca registros con saturación de oxígeno por debajo del umbral.
-     * Útil para detectar hipoxia (< 95%).
-     */
-    public List<SignosVitales> buscarConHipoxia(Integer umbral) {
-        return signosVitalesRepository.findBySaturacionOxigenoLessThan(umbral);
+    public List<signosVitalesResponse> buscarConHipoxia(Integer umbral) {
+        return signosVitalesRepository.findBySaturacionOxigenoLessThan(umbral)
+                .stream().map(signosVitalesMapper::toResponse).toList();
     }
 
-    /**
-     * Busca registros con frecuencia cardíaca fuera del rango normal (60-100 ppm).
-     */
-    public List<SignosVitales> buscarFrecuenciaAnormal() {
-        return signosVitalesRepository.findFrecuenciaFueraDeRango(60, 100);
+    public List<signosVitalesResponse> buscarFrecuenciaAnormal() {
+        return signosVitalesRepository.findFrecuenciaFueraDeRango(60, 100)
+                .stream().map(signosVitalesMapper::toResponse).toList();
     }
 
-    /**
-     * Busca registros con sobrepeso u obesidad según IMC.
-     * IMC > 25 sobrepeso, IMC > 30 obesidad.
-     */
-    public List<SignosVitales> buscarConSobrepeso() {
-        return signosVitalesRepository.findByImcGreaterThan(25.0);
+    public List<signosVitalesResponse> buscarConSobrepeso() {
+        return signosVitalesRepository.findByImcGreaterThan(25.0)
+                .stream().map(signosVitalesMapper::toResponse).toList();
     }
 
-    public List<SignosVitales> buscarPorRangoIMC(Double imcMin, Double imcMax) {
-        return signosVitalesRepository.findByImcBetween(imcMin, imcMax);
+    public List<signosVitalesResponse> buscarPorRangoIMC(Double imcMin, Double imcMax) {
+        return signosVitalesRepository.findByImcBetween(imcMin, imcMax)
+                .stream().map(signosVitalesMapper::toResponse).toList();
     }
 
-    public void eliminarSignosVitales(Long id) {
+    public void eliminar(Long id) {
         if (!signosVitalesRepository.existsById(id)) {
             throw new ResourceNotFoundException("Signos vitales con id " + id + " no encontrados");
         }

@@ -10,41 +10,39 @@ public class SignosVitales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "presion_arterial")
-    private String presionArterial; // Ej: "120/80"
+    @Column(name = "presion_arterial", nullable = false)
+    private String presionArterial;
 
-    @Column(name = "frecuencia_cardiaca")
-    private Integer frecuenciaCardiaca; // ppm
+    @Column(name = "frecuencia_cardiaca", nullable = false)
+    private Integer frecuenciaCardiaca;
 
-    @Column(name = "temperatura")
-    private Double temperatura; // °C
+    @Column(name = "temperatura", nullable = false)
+    private Double temperatura;
 
-    @Column(name = "peso")
-    private Double peso; // kg
+    @Column(name = "peso", nullable = false)
+    private Double peso;
 
-    @Column(name = "altura")
-    private Double altura; // metros
+    @Column(name = "altura", nullable = false)
+    private Double altura;
 
     @Column(name = "imc")
-    private Double imc; // calculado automáticamente
+    private Double imc;
 
-    @Column(name = "saturacion_oxigeno")
-    private Integer saturacionOxigeno; // %
+    @Column(name = "saturacion_oxigeno", nullable = false)
+    private Integer saturacionOxigeno;
 
-    // Constructor vacío
-    public SignosVitales() {}
-
-    /**
-     * Calcula el IMC automáticamente al setear peso o altura.
-     * IMC = peso / (altura * altura)
-     */
-    public void calcularIMC() {
-        if (this.peso != null && this.altura != null && this.altura > 0) {
-            this.imc = Math.round((this.peso / (this.altura * this.altura)) * 100.0) / 100.0;
+    // IMC se calcula automáticamente al setear peso y altura
+    @PostLoad
+    @PrePersist
+    @PreUpdate
+    public void calcularImc() {
+        if (peso != null && altura != null && altura > 0) {
+            this.imc = Math.round((peso / (altura * altura)) * 100.0) / 100.0;
         }
     }
 
-    // Getters y Setters
+    public SignosVitales() {}
+
     public Long getId() { return id; }
 
     public String getPresionArterial() { return presionArterial; }
@@ -57,16 +55,10 @@ public class SignosVitales {
     public void setTemperatura(Double temperatura) { this.temperatura = temperatura; }
 
     public Double getPeso() { return peso; }
-    public void setPeso(Double peso) {
-        this.peso = peso;
-        calcularIMC();
-    }
+    public void setPeso(Double peso) { this.peso = peso; }
 
     public Double getAltura() { return altura; }
-    public void setAltura(Double altura) {
-        this.altura = altura;
-        calcularIMC();
-    }
+    public void setAltura(Double altura) { this.altura = altura; }
 
     public Double getImc() { return imc; }
 

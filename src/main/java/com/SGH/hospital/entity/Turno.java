@@ -27,10 +27,10 @@ public class Turno {
     private String motivoConsulta;
 
     @Column(name = "recordatorio_24h_enviado")
-    private boolean recordatorio24hEnviado = false;
+    private boolean recordatorio24hEnviado;
 
     @Column(name = "recordatorio_2h_enviado")
-    private boolean recordatorio2hEnviado = false;
+    private boolean recordatorio2hEnviado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id")

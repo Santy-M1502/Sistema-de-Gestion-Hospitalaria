@@ -2,8 +2,8 @@ package com.SGH.hospital.controller;
 
 import com.SGH.hospital.dto.medico.MedicoRequest;
 import com.SGH.hospital.dto.medico.MedicoUpdateRequest;
-import com.SGH.hospital.entity.Consulta;
 import com.SGH.hospital.dto.medico.MedicoResponse;
+import com.SGH.hospital.dto.consulta.ConsultaResponse;
 import com.SGH.hospital.dto.horarioAtencion.HorarioAtencionDTO;
 
 import com.SGH.hospital.enums.EstadoUsuario;
@@ -163,7 +163,7 @@ public class MedicoController {
     // ============================================================
 
     @GetMapping("/{id}/consultas")
-    public ResponseEntity<List<Consulta>> getConsultas(@PathVariable Long id) {
+    public ResponseEntity<List<ConsultaResponse>> getConsultas(@PathVariable Long id) {
         return ResponseEntity.ok(consultaService.listarConsultasDeMedico(id));
     }
 }

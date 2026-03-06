@@ -1,9 +1,9 @@
 package com.SGH.hospital.controller;
 
+import com.SGH.hospital.dto.consulta.ConsultaResponse;
 import com.SGH.hospital.dto.paciente.PacienteRequest;
 import com.SGH.hospital.dto.paciente.PacienteResponse;
 import com.SGH.hospital.dto.paciente.PacienteUpdateRequest;
-import com.SGH.hospital.entity.Consulta;
 import com.SGH.hospital.entity.HistoriaClinica;
 import com.SGH.hospital.enums.EstadoUsuario;
 import com.SGH.hospital.service.ConsultaService;
@@ -189,7 +189,7 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}/consultas")
-    public ResponseEntity<List<Consulta>> getConsultas(@PathVariable Long id) {
+    public ResponseEntity<List<ConsultaResponse>> getConsultas(@PathVariable Long id) {
         return ResponseEntity.ok(consultaService.listarConsultasDePaciente(id));
     }
 }
