@@ -1,7 +1,9 @@
 package com.SGH.hospital.controller;
 
-import com.SGH.hospital.entity.Especialidad;
+import com.SGH.hospital.dto.especialidad.EspecialidadRequest;
+import com.SGH.hospital.dto.especialidad.EspecialidadResponse;
 import com.SGH.hospital.service.EspecialidadService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,41 +20,28 @@ public class EspecialidadController {
         this.especialidadService = especialidadService;
     }
 
-    // ============================================================
-    // Crear Especialidad
-    // ============================================================
     @PostMapping
-    public ResponseEntity<Especialidad> crear(@RequestBody Especialidad especialidad) {
-        Especialidad creada = especialidadService.crear(especialidad);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+    public ResponseEntity<EspecialidadResponse> crear(@Valid @RequestBody EspecialidadRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(especialidadService.crear(request));
     }
 
-    // ============================================================
-    // Listar / Obtener objetos
-    // ============================================================
     @GetMapping
-    public ResponseEntity<List<Especialidad>> listar() {
+    public ResponseEntity<List<EspecialidadResponse>> listar() {
         return ResponseEntity.ok(especialidadService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Especialidad> obtener(@PathVariable Long id) {
+    public ResponseEntity<EspecialidadResponse> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(especialidadService.obtener(id));
     }
 
-    // ============================================================
-    // Actualizad Datos
-    // ============================================================
     @PutMapping("/{id}")
-    public ResponseEntity<Especialidad> actualizar(
+    public ResponseEntity<EspecialidadResponse> actualizar(
             @PathVariable Long id,
-            @RequestBody Especialidad especialidad) {
-        return ResponseEntity.ok(especialidadService.actualizar(id, especialidad));
+            @Valid @RequestBody EspecialidadRequest request) {
+        return ResponseEntity.ok(especialidadService.actualizar(id, request));
     }
 
-    // ============================================================
-    // Eliminar / Desactivar Datos
-    // ============================================================
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         especialidadService.eliminar(id);

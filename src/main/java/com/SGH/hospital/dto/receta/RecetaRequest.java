@@ -1,14 +1,15 @@
 package com.SGH.hospital.dto.receta;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import com.SGH.hospital.enums.EstadoReceta;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Builder
+@Builder    
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecetaRequest {
@@ -20,7 +21,10 @@ public class RecetaRequest {
     @Future(message = "La fecha de vencimiento debe ser futura")
     private LocalDate fechaVencimiento;
 
-    @NotEmpty(message = "Debe incluir al menos un medicamento")
+    @NotEmpty(message = "La fecha de emision es obligatoria")
     @Valid
-    private List<RecetaMedicamentoRequest> medicamentos;
+    private LocalDate fechaEmision;
+    
+    @NotEmpty(message = "El estado de receta es obligatorio")
+    private EstadoReceta estadoReceta;
 }

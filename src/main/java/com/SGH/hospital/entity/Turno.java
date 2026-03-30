@@ -26,10 +26,10 @@ public class Turno {
     @Column(name = "motivo_consulta")
     private String motivoConsulta;
 
-    @Column(name = "recordatorio_24h_enviado")
+    @Column(name = "recordatorio_24h_enviado", nullable = false)
     private boolean recordatorio24hEnviado;
 
-    @Column(name = "recordatorio_2h_enviado")
+    @Column(name = "recordatorio_2h_enviado", nullable = false)
     private boolean recordatorio2hEnviado;
 
     @ManyToOne(fetch = FetchType.LAZY)

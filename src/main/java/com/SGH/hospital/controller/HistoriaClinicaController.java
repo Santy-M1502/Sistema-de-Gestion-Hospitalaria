@@ -125,8 +125,10 @@ public class HistoriaClinicaController {
             @PathVariable Long id,
             @RequestBody Antecedente antecedente) {
 
-        // Verifica que la historia clínica exista
-        historiaClinicaService.buscarPorId(id);
+        HistoriaClinica historia = historiaClinicaService.buscarPorId(id); // ← guardás la HC
+        antecedente.setId(null);          // ← forzás INSERT, nunca UPDATE
+        antecedente.setHistoriaClinica(historia);  // ← vinculás el antecedente a la HC
+        
         Antecedente guardado = antecedenteService.guardarAntecedente(antecedente);
         return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
     }

@@ -11,6 +11,9 @@ import com.SGH.hospital.exception.ResourceNotFoundException;
 import com.SGH.hospital.mapper.ConsultaMapper;
 import com.SGH.hospital.repository.ConsultaRepository;
 import com.SGH.hospital.repository.TurnoRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,6 +34,7 @@ public class ConsultaService {
         this.consultaMapper = consultaMapper;
     }
 
+    @Transactional
     public ConsultaResponse crearConsulta(ConsultaRequest request) {
 
         Turno turno = turnoRepository.findById(request.getTurnoId())
