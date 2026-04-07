@@ -47,6 +47,8 @@ public class PacienteChatService {
     private final AiChatClient aiChatClient;
     private final PacienteRepository pacienteRepository;
     private final HistoriaClinicaRepository historiaClinicaRepository;
+    private final AiToolCallProcessor toolCallProcessor;
+
  
     // ── Enviar mensaje ────────────────────────────────────────────────────────
  
@@ -71,15 +73,27 @@ public class PacienteChatService {
         String mensajeFinal = request.isIncluirContextoClinico()
                 ? construirMensajeConContexto(paciente, historia.orElse(null), request.getMensaje())
                 : request.getMensaje();
+        
+        // Incluir instrucciones de tools en el primer mensaje
+        if (aiChatClient.obtenerCantidadMensajes(sessionId) == 0) {
+            mensajeFinal = toolCallProcessor.construirPromptConTools() + "\n\n" + mensajeFinal;
+        }
  
         log.info("[CHAT] Paciente {} ({}) → sesión '{}'",
                 pacienteId, paciente.getNombre(), sessionId);
  
         // 5. Llamamos al microservicio de IA
         AiChatResponse aiResponse = aiChatClient.enviarMensaje(sessionId, mensajeFinal);
+        
+        // 6. Procesar tool calls si los hay
+        String respuestaFinal = aiResponse.getRespuesta();
+        if (!aiResponse.tieneError() && respuestaFinal != null) {
+            respuestaFinal = toolCallProcessor.procesarToolCalls(pacienteId, aiResponse);
+        }
  
-        // 6. Cuántos mensajes lleva la sesión (para mostrar en el frontend)
+        // 7. Cuántos mensajes lleva la sesión (para mostrar en el frontend)
         int mensajesEnSesion = aiChatClient.obtenerCantidadMensajes(sessionId);
+
  
         // 7. Mapeamos al DTO del frontend
         if (aiResponse.tieneError()) {
@@ -93,7 +107,7 @@ public class PacienteChatService {
         }
  
         return ChatResponse.builder()
-                .respuesta(aiResponse.getRespuesta())
+                .respuesta(respuestaFinal)
                 .modelo(aiResponse.getModelo())
                 .tokensUsados(aiResponse.getTokensUsados())
                 .tiempoMs(aiResponse.getTiempoMs())

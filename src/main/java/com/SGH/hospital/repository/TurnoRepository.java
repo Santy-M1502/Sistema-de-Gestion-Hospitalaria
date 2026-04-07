@@ -146,4 +146,24 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
     List<Turno> findTurnosParaAusentes(
         @Param("limite") LocalDateTime limite
     );
+
+    /**
+     * Obtiene los turnos de un médico en un rango de fechas/horas.
+     * Usado para verificar disponibilidad de turnos.
+     * @param medicoId identificador del médico
+     * @param desde fecha/hora mínima
+     * @param hasta fecha/hora máxima
+     * @return lista de turnos en ese período
+     */
+    @Query("""
+        SELECT t FROM Turno t
+        WHERE t.medico.id = :medicoId
+        AND t.hora BETWEEN :desde AND :hasta
+        ORDER BY t.hora
+        """)
+    List<Turno> findByMedicoIdAndFechaBetween(
+        @Param("medicoId") Long medicoId,
+        @Param("desde") LocalDateTime desde,
+        @Param("hasta") LocalDateTime hasta
+    );
 }
