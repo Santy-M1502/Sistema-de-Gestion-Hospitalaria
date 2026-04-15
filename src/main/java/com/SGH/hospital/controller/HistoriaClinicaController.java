@@ -7,6 +7,7 @@ import com.SGH.hospital.service.AntecedenteService;
 import com.SGH.hospital.service.HistoriaClinicaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class HistoriaClinicaController {
      * Crea una historia clínica para un paciente.
      */
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<HistoriaClinica> crearHistoriaClinica(
             @RequestParam Long pacienteId,
             @RequestParam(required = false) GrupoSanguineo grupoSanguineo,
@@ -47,6 +49,7 @@ public class HistoriaClinicaController {
      * Busca una historia clínica por su ID con todas sus relaciones.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<HistoriaClinica> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(historiaClinicaService.buscarPorId(id));
     }
@@ -56,6 +59,7 @@ public class HistoriaClinicaController {
      * Busca la historia clínica de un paciente específico.
      */
     @GetMapping("/paciente/{pacienteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<HistoriaClinica> buscarPorPaciente(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(historiaClinicaService.buscarPorPacienteId(pacienteId));
     }
@@ -65,6 +69,7 @@ public class HistoriaClinicaController {
      * Lista todas las historias clínicas de un grupo sanguíneo.
      */
     @GetMapping("/grupo-sanguineo/{grupo}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<HistoriaClinica>> buscarPorGrupoSanguineo(@PathVariable GrupoSanguineo grupo) {
         return ResponseEntity.ok(historiaClinicaService.buscarPorGrupoSanguineo(grupo));
     }
@@ -74,6 +79,7 @@ public class HistoriaClinicaController {
      * Busca historias clínicas que contengan cierta alergia.
      */
     @GetMapping("/alergia")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<HistoriaClinica>> buscarPorAlergia(@RequestParam String descripcion) {
         return ResponseEntity.ok(historiaClinicaService.buscarPorAlergia(descripcion));
     }
@@ -83,6 +89,7 @@ public class HistoriaClinicaController {
      * Actualiza las alergias de una historia clínica.
      */
     @PatchMapping("/{id}/alergias")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<HistoriaClinica> actualizarAlergias(
             @PathVariable Long id,
             @RequestParam String alergias) {
@@ -95,6 +102,7 @@ public class HistoriaClinicaController {
      * Actualiza el grupo sanguíneo de una historia clínica.
      */
     @PatchMapping("/{id}/grupo-sanguineo")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<HistoriaClinica> actualizarGrupoSanguineo(
             @PathVariable Long id,
             @RequestParam GrupoSanguineo grupoSanguineo) {
@@ -107,6 +115,7 @@ public class HistoriaClinicaController {
      * Elimina una historia clínica.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Void> eliminarHistoriaClinica(@PathVariable Long id) {
         historiaClinicaService.eliminarHistoriaClinica(id);
         return ResponseEntity.noContent().build();
@@ -121,6 +130,7 @@ public class HistoriaClinicaController {
      * Agrega un antecedente a una historia clínica.
      */
     @PostMapping("/{id}/antecedentes")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Antecedente> agregarAntecedente(
             @PathVariable Long id,
             @RequestBody Antecedente antecedente) {
@@ -138,6 +148,7 @@ public class HistoriaClinicaController {
      * Elimina un antecedente de una historia clínica.
      */
     @DeleteMapping("/{id}/antecedentes/{antecedenteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Void> eliminarAntecedente(
             @PathVariable Long id,
             @PathVariable Long antecedenteId) {

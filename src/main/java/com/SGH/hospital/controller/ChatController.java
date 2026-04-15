@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.SGH.hospital.chat.AiChatClient;
@@ -39,6 +40,7 @@ public class ChatController {
     //  Response:      { "respuesta": "...", "modelo": "llama3", ... }
     //
     @PostMapping("/{pacienteId}/mensaje")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<ChatResponse> enviarMensaje(
             @PathVariable Long pacienteId,
             @Valid @RequestBody ChatRequest request) {
@@ -60,6 +62,7 @@ public class ChatController {
     //  El paciente puede pedirlo desde el frontend ("Empezar nueva conversación").
     //
     @DeleteMapping("/{pacienteId}/historial")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Map<String, String>> limpiarHistorial(
             @PathVariable Long pacienteId) {
  
@@ -76,6 +79,7 @@ public class ChatController {
     //  Útil para que el frontend sepa si hay una conversación en curso.
     //
     @GetMapping("/{pacienteId}/estado")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Map<String, Object>> obtenerEstado(
             @PathVariable Long pacienteId) {
  

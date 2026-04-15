@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class ListaEsperaController {
 
     // Agregar paciente a la lista
     @PostMapping("/agregar")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<?> agregar(
             @RequestParam Long pacienteId,
             @RequestParam Long medicoId,
@@ -38,6 +40,7 @@ public class ListaEsperaController {
 
     // Obtener lista de un día
     @GetMapping("/dia")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<Page<ListaEsperaResponse>> obtenerPorDia(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
             Pageable pageable
@@ -50,6 +53,7 @@ public class ListaEsperaController {
 
     // Obtener el siguiente paciente en la lista
     @GetMapping("/siguiente")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public ResponseEntity<?> siguiente(@RequestParam Long medicoId) {
         ListaEspera siguiente = listaEsperaService.obtenerSiguiente(medicoId);
         if (siguiente == null) {
@@ -60,6 +64,7 @@ public class ListaEsperaController {
 
     // Ejecutar la lógica cuando un turno se cancela
     @PostMapping("/turno-cancelado")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public String turnoCancelado(@RequestParam Long turnoId) {
         listaEsperaService.manejarTurnoCancelado(turnoId);
         return "Procesado";
@@ -69,6 +74,7 @@ public class ListaEsperaController {
 
     // Confirmación
     @PostMapping("/notificacion/confirmacion")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public String confirmar(@RequestParam Long turnoId) {
         Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
@@ -79,6 +85,7 @@ public class ListaEsperaController {
 
     // Aviso 24h
     @PostMapping("/notificacion/24h")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public String aviso24(@RequestParam Long turnoId) {
         Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
@@ -89,6 +96,7 @@ public class ListaEsperaController {
 
     // Aviso 2h
     @PostMapping("/notificacion/2h")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     public String aviso2(@RequestParam Long turnoId) {
         Turno turno = turnoRepository.findByIdWithRelations(turnoId)
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));

@@ -31,6 +31,7 @@ public class AiChatClient {
     private final ObjectMapper mapper = new ObjectMapper();
 
     // ── POST /api/v1/chat ─────────────────────────────────────────────────────
+    // Enviar mensaje a IaSGH especificando la session
 
     public AiChatResponse enviarMensaje(String sessionId, String mensaje) {
         try {
@@ -63,6 +64,7 @@ public class AiChatClient {
     }
 
     // ── DELETE /api/v1/chat/{sessionId} ───────────────────────────────────────
+    // Borra sesion por su id
 
     public void limpiarSesion(String sessionId) {
         try {
@@ -82,6 +84,7 @@ public class AiChatClient {
     }
 
     // ── GET /api/v1/chat/{sessionId}/estado ───────────────────────────────────
+    // Obtiene cantidad de mensajes de una sesion especifico
 
     public int obtenerCantidadMensajes(String sessionId) {
         try {
@@ -105,6 +108,7 @@ public class AiChatClient {
     }
 
     // ── GET /api/v1/health ────────────────────────────────────────────────────
+    // Verifica el funcionamiento de IaSGH
 
     public AiHealthResponse verificarSalud() {
         try {

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,31 +26,37 @@ public class ConsultaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<ConsultaResponse> crearConsulta(@Valid @RequestBody ConsultaRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(consultaService.crearConsulta(request));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<ConsultaResponse> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(consultaService.buscarPorId(id));
     }
 
     @GetMapping("/turno/{turnoId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<ConsultaResponse> buscarPorTurno(@PathVariable Long turnoId) {
         return ResponseEntity.ok(consultaService.buscarPorTurnoId(turnoId));
     }
 
     @GetMapping("/medico/{medicoId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<ConsultaResponse>> listarPorMedico(@PathVariable Long medicoId) {
         return ResponseEntity.ok(consultaService.listarConsultasDeMedico(medicoId));
     }
 
     @GetMapping("/paciente/{pacienteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<ConsultaResponse>> listarPorPaciente(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(consultaService.listarConsultasDePaciente(pacienteId));
     }
 
     @GetMapping("/fechas")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<ConsultaResponse>> listarPorFechas(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta) {
@@ -57,6 +64,7 @@ public class ConsultaController {
     }
 
     @GetMapping("/medico/{medicoId}/periodo")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<ConsultaResponse>> listarPorMedicoYPeriodo(
             @PathVariable Long medicoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
@@ -65,11 +73,13 @@ public class ConsultaController {
     }
 
     @GetMapping("/diagnostico")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<List<ConsultaResponse>> buscarPorDiagnostico(@RequestParam String descripcion) {
         return ResponseEntity.ok(consultaService.buscarPorDiagnostico(descripcion));
     }
 
     @GetMapping("/medico/{medicoId}/count")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Long> contarConsultasDeMedico(
             @PathVariable Long medicoId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
@@ -78,6 +88,7 @@ public class ConsultaController {
     }
 
     @PatchMapping("/{id}/diagnostico")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<ConsultaResponse> actualizarDiagnostico(
             @PathVariable Long id,
             @RequestParam String diagnostico,
@@ -87,6 +98,7 @@ public class ConsultaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'PACIENTE')")
     public ResponseEntity<Void> eliminarConsulta(@PathVariable Long id) {
         consultaService.eliminarConsulta(id);
         return ResponseEntity.noContent().build();
