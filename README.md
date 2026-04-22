@@ -1,57 +1,66 @@
-🏥 Sistema de Gestión Hospitalaria
+# 🏥 Sistema de Gestión Hospitalaria
 
-API backend para la gestión de pacientes, turnos, consultas médicas y listas de espera.
-Incluye integración con un microservicio de IA y sistema de notificaciones por email.
+API REST desarrollada en **Spring Boot** para la gestión de pacientes, turnos, consultas médicas y listas de espera.  
+Incluye integración con un microservicio de IA y sistema de notificaciones automáticas por email.
 
-🚀 Descripción
+---
 
-Este proyecto es un sistema backend desarrollado para centralizar la gestión de un hospital o clínica.
+## 🚀 Features
 
-Permite:
+- 👤 Gestión de pacientes (CRUD)
+- 📅 Gestión de turnos médicos
+- 🩺 Registro de consultas
+- ⏳ Sistema de listas de espera
+- 📬 Emails automáticos (recordatorios)
+- 🤖 Integración con microservicio de IA
+- 🔐 Autenticación con JWT
+- 📄 Documentación con Swagger
 
-Administrar pacientes
-Gestionar turnos médicos
-Registrar consultas
-Manejar listas de espera
-Automatizar recordatorios por email
-Integrarse con un bot de IA para consultas y acciones
+---
 
-Actualmente no cuenta con deploy en producción, pero puede probarse localmente mediante Swagger.
+## 🧩 Módulos
 
-🧩 Funcionalidades principales
-📌 Pacientes
-Alta, baja y modificación de pacientes
-Consulta de datos personales y médicos
-📅 Turnos
-Creación y gestión de turnos
-Asociación de turnos a pacientes
-Recordatorios automáticos:
-24 horas antes
-2 horas antes
-🩺 Consultas
-Registro de consultas médicas
-Historial de atención por paciente
-⏳ Lista de espera
-Gestión de pacientes en espera
-Ordenamiento según prioridad o disponibilidad
-🤖 Integración con IA
-Comunicación con un microservicio externo
-Funcionalidades actuales:
-Chatbot para consultas
-Posibilidad de crear turnos mediante interacción
-🛠️ Tecnologías utilizadas
-Java / Spring Boot
-PostgreSQL
-JWT (autenticación)
-Swagger (documentación y testing)
-Integración con microservicios
-Envío de emails automatizados
-⚙️ Configuración
+### 👤 Pacientes
+- Alta, baja y modificación
+- Consulta de datos personales
 
-El proyecto utiliza variables de entorno para la configuración.
+### 📅 Turnos
+- Creación y asignación de turnos
+- Asociación con pacientes
+- Recordatorios automáticos:
+  - 24h antes
+  - 2h antes
 
-Ejemplo de .env:
+### 🩺 Consultas
+- Registro de consultas médicas
+- Historial por paciente
 
+### ⏳ Lista de espera
+- Gestión de pacientes en espera
+- Ordenamiento por prioridad
+
+### 🤖 IA (Microservicio)
+- Chatbot para consultas
+- Creación de turnos mediante interacción
+
+---
+
+## 🛠️ Tech Stack
+
+- **Java + Spring Boot**
+- **PostgreSQL**
+- **JWT (Auth)**
+- **Swagger**
+- **Microservices architecture**
+- **Email service**
+
+---
+
+## ⚙️ Configuración
+
+Crear un archivo `.env` con:
+
+```env
 # Base de datos
 DATABASE_URL=jdbc:postgresql://db.tuproyecto.supabase.co:5432/postgres
 DATABASE_USERNAME=postgres.tuproyecto
@@ -65,45 +74,101 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:5173
 
 # Puerto
 PORT=8080
-▶️ Ejecución local
-Clonar el repositorio:
+```
+
+---
+
+## ▶️ Run local
+
+```bash
 git clone https://github.com/Santy-M1502/Sistema-de-Gestion-Hospitalaria.git
-Configurar variables de entorno
-Levantar la aplicación
-Acceder a Swagger para probar los endpoints:
+cd Sistema-de-Gestion-Hospitalaria
+```
+
+Configurar las variables de entorno y ejecutar la app.
+
+---
+
+## 📄 API Docs (Swagger)
+
+Una vez levantado el proyecto:
+
+```
 http://localhost:8080/swagger-ui/index.html
-🔐 Autenticación
+```
 
-El sistema utiliza JWT para la autenticación de usuarios.
+---
 
-Login → devuelve token
-Requests protegidas → requieren token en headers
-📡 Endpoints (resumen)
+## 🔐 Autenticación
 
-Algunos de los endpoints disponibles:
+El sistema utiliza JWT:
 
-/pacientes → gestión de pacientes
-/turnos → gestión de turnos
-/consultas → registro de consultas
-/espera → lista de espera
-/auth → autenticación
-/ia → integración con chatbot
+- Login → devuelve token
+- Requests protegidas → requieren header:
 
-Para ver el detalle completo usar Swagger.
+```
+Authorization: Bearer <token>
+```
 
-📬 Notificaciones
+---
 
-El sistema envía emails automáticos a los pacientes:
+## 📡 Endpoints principales
 
-Recordatorio 24 horas antes del turno
-Recordatorio 2 horas antes del turno
-🔄 Arquitectura
-API REST principal (este proyecto)
-Microservicio externo de IA
-Base de datos PostgreSQL
-📌 Estado del proyecto
-✔️ Funcionalidades principales implementadas
-✔️ Integración con IA
-✔️ Sistema de emails
-✔️ Documentación con Swagger
-❌ Deploy en producción (pendiente)
+| Endpoint     | Descripción             |
+|--------------|-------------------------|
+| `/pacientes` | Gestión de pacientes    |
+| `/turnos`    | Gestión de turnos       |
+| `/consultas` | Consultas médicas       |
+| `/espera`    | Lista de espera         |
+| `/auth`      | Autenticación           |
+| `/ia`        | Integración con IA      |
+
+---
+
+## 📬 Notificaciones
+
+Se envían emails automáticos:
+
+- ⏰ 24 horas antes del turno
+- ⏰ 2 horas antes del turno
+
+---
+
+## 🏗️ Arquitectura
+
+```
+[ Cliente ]
+     ↓
+[ API Spring Boot ]
+     ↓
+[ PostgreSQL ]
+
++ Microservicio IA
++ Servicio de Emails
+```
+
+---
+
+## 📌 Estado del proyecto
+
+- ✅ CRUD completo
+- ✅ JWT implementado
+- ✅ Integración con IA
+- ✅ Emails automáticos
+- ✅ Swagger
+- ❌ Deploy (pendiente)
+
+---
+
+## 📈 Próximos pasos
+
+- Deploy en cloud
+- Frontend administrativo
+- Roles y permisos avanzados
+- Logging y monitoreo
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado por **Santi**
