@@ -116,12 +116,13 @@ Authorization: Bearer <token>
 
 | Endpoint     | Descripción             |
 |--------------|-------------------------|
-| `/pacientes` | Gestión de pacientes    |
-| `/turnos`    | Gestión de turnos       |
-| `/consultas` | Consultas médicas       |
-| `/espera`    | Lista de espera         |
-| `/auth`      | Autenticación           |
-| `/ia`        | Integración con IA      |
+| `/api/pacientes` | Gestión de pacientes    |
+| `/api/medicos` | Gestión de medicos    |
+| `/api/turnos`    | Gestión de turnos       |
+| `/api/consultas` | Consultas médicas       |
+| `/api/lista-espera`    | Lista de espera         |
+| `/api/auth`      | Autenticación           |
+| `/api/chat`        | Integración con IA      |
 
 ---
 
@@ -157,15 +158,6 @@ Se envían emails automáticos:
 - ✅ Emails automáticos
 - ✅ Swagger
 - ❌ Deploy (pendiente)
-
----
-
-## 📈 Próximos pasos
-
-- Deploy en cloud
-- Frontend administrativo
-- Roles y permisos avanzados
-- Logging y monitoreo
 
 ---
 
