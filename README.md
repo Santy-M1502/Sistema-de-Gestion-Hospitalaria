@@ -73,7 +73,7 @@ JWT_SECRET=clave_secreta_local_para_desarrollo
 CORS_ORIGINS=http://localhost:3000,http://localhost:5173
 
 # Puerto
-PORT=8080
+PORT=8089
 ```
 
 ---
